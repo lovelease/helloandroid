@@ -14,53 +14,61 @@
         android:layout_gravity="center_horizontal"
         android:text="@string/hello_world" />
     
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	    xmlns:tools="http://schemas.android.com/tools"
-	    android:orientation="horizontal"
-	    android:layout_marginLeft="100dp"
-	    android:layout_marginTop="50dp"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    tools:context=".MainActivity" >
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        tools:context=".MainActivity" >
+
 	    <EditText
 	        android:id="@+id/nameTxt"
-	        android:layout_width="300dp"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:hint="@+string/hintStr" />
+
 	    <Button
 	        android:id="@+id/btn"
-	        android:layout_width="100dp"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="@+string/okBtn" />
+
 	</LinearLayout>
 
-    <LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-	    xmlns:tools="http://schemas.android.com/tools"
-	    android:orientation="vertical"
-	    android:layout_marginLeft="100dp"
-	    android:layout_marginTop="50dp"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    tools:context=".MainActivity" >
-	    <TextView 
-        android:id="@+id/showContent"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_gravity="center_horizontal" />
-	    <TextView />
+        android:orientation="vertical"
+        tools:context=".MainActivity" >
+
+	    <TextView
+	        android:id="@+id/showContent"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="50dp"
+	        android:gravity="center_horizontal" />
+
 	    <TextView 
-        android:id="@+id/txtView_hintMsg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_gravity="center_horizontal" />
-	    <TextView />
+	        android:id="@+id/txtView_hintMsg"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="50dp"
+	        android:layout_gravity="center_horizontal"
+	        android:text="@string/msg_goNext" />
+
 	    <Button
 	        android:id="@+id/btn_goNext"
-	        android:layout_width="100dp"
+	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:layout_gravity="center_horizontal"
 	        android:text="@+string/goNextBtn" />
+
     </LinearLayout>
     
     

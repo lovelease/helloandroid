@@ -2,6 +2,7 @@ package com.example.helloandroid;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 	EditText editText;
 	Button okBtn;
 	TextView showContent;
+	Button goNextBtn;
 	
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {
@@ -22,8 +24,14 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 		editText=(EditText)findViewById(R.id.nameTxt);
 		okBtn = (Button)findViewById(R.id.btn);
 		showContent = (TextView)findViewById(R.id.showContent);
+		goNextBtn = (Button)findViewById(R.id.btn_goNext);
 		
+		// OK button
 		okBtn.setOnClickListener( this );
+		
+		// go next!
+		goNextBtn.setOnClickListener( new GoNextButtonOnClickLsnr() );
+		
 	}
 	
 	@Override
@@ -33,6 +41,15 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 		
 //		String httpUrl = "http://www.baidu.com";
 //		WebDataAccess.webDataAccess(httpUrl, showContent);
+	}
+	
+	class GoNextButtonOnClickLsnr implements Button.OnClickListener{
+
+		@Override
+		public void onClick( View v ) {
+			Intent in = new Intent(MainActivity.this, IntentActivity.class);
+			startActivity(in);
+		}
 	}
 
 	@Override

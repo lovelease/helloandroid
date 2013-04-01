@@ -7,6 +7,10 @@
     <string name="hintStr">enter your name</string>
     <string name="okBtn">OK</string>
     <string name="welcome">,welcome!</string>
+    <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_intent">IntentActivity</string>
+    <string name="msg_goNext">click the button below to show the message on another page:</string>
+    <string name="goNextBtn">Go Next!</string>
+    
 
 </resources>
