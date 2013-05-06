@@ -14,7 +14,10 @@ public class IntentActivity extends Activity {
 		setContentView( R.layout.activity_intent );
 		
 		showMsgFromPrePage = (TextView)findViewById(R.id.showMsgFromPrePage);
-		showMsgFromPrePage.setText( "success" );
+		// Get values from previous page
+		Bundle bd = getIntent().getExtras(); 
+		String name = bd.getString( "inName" ); 
+		showMsgFromPrePage.setText( name + ",you succeeded in transporting between activities!" );
 	}
 
 	@Override

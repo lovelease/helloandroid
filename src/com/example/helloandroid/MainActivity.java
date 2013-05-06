@@ -48,6 +48,10 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 		@Override
 		public void onClick( View v ) {
 			Intent in = new Intent(MainActivity.this, IntentActivity.class);
+			// Transport values to next activity
+			Bundle bd = new Bundle();
+			bd.putString( "inName", editText.getText().toString() );
+			in.putExtras( bd );
 			startActivity(in);
 		}
 	}
