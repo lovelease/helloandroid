@@ -1,11 +1,13 @@
 package com.example.helloandroid;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.view.Menu;
 import android.widget.TextView;
 
-public class IntentActivity extends Activity {
+import com.google.android.maps.MapActivity;
+
+
+public class IntentActivity extends MapActivity {
 
 	TextView showMsgFromPrePage;
 	@Override
@@ -25,6 +27,15 @@ public class IntentActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate( R.menu.activity_intent, menu );
 		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.google.android.maps.MapActivity#isRouteDisplayed()
+	 */
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
