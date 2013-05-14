@@ -11,6 +11,9 @@
     <string name="title_activity_intent">IntentActivity</string>
     <string name="msg_goNext">click the button below to show the message on another page:</string>
     <string name="goNextBtn">Go Next!</string>
+    
+    <string name="msg_googlemap">click the button below to see google map:</string>
+    <string name="googleMapBtn">Google Map</string>
     <string name="title_activity_google_map">GoogleMapActivity</string>
     <string name="action_settings">Settings</string>
 

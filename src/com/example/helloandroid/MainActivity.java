@@ -15,6 +15,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 	Button okBtn;
 	TextView showContent;
 	Button goNextBtn;
+	Button googleMapBtn;
 	
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {
@@ -25,12 +26,16 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 		okBtn = (Button)findViewById(R.id.btn);
 		showContent = (TextView)findViewById(R.id.showContent);
 		goNextBtn = (Button)findViewById(R.id.btn_goNext);
+		googleMapBtn = (Button)findViewById(R.id.btn_googlemap);
 		
 		// OK button
 		okBtn.setOnClickListener( this );
 		
 		// go next!
 		goNextBtn.setOnClickListener( new GoNextButtonOnClickLsnr() );
+		
+		// Google Map
+		googleMapBtn.setOnClickListener( new GoogleMapButtonOnClickLsnr() );
 		
 	}
 	
@@ -52,6 +57,15 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 			Bundle bd = new Bundle();
 			bd.putString( "inName", editText.getText().toString() );
 			in.putExtras( bd );
+			startActivity(in);
+		}
+	}
+	
+	class GoogleMapButtonOnClickLsnr implements Button.OnClickListener{
+
+		@Override
+		public void onClick( View v ) {
+			Intent in = new Intent(MainActivity.this, IntentActivity.class);
 			startActivity(in);
 		}
 	}
