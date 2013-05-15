@@ -65,7 +65,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 
 		@Override
 		public void onClick( View v ) {
-			Intent in = new Intent(MainActivity.this, IntentActivity.class);
+			Intent in = new Intent(MainActivity.this, GoogleMapActivity.class);
 			startActivity(in);
 		}
 	}
