@@ -7,6 +7,15 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
+
+    <!-- for Google Map -->
+    <!-- 允许应用通过 GPS 获取当前地理位置信息的权限，较网络获得的地理位置信息更为精确 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 允许应用访问网络的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 允许应用通过网络信息获取当前地理位置信息的权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <!--
     <permission
           android:name="com.example.helloandroid.permission.MAPS_RECEIVE"
@@ -26,12 +35,15 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <!-- for Google Map -->
+        <uses-library android:name="com.google.android.maps" />
+
         <activity
             android:name="com.example.helloandroid.MainActivity"
             android:label="@string/title_activity_main" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -44,6 +56,10 @@
         <activity
             android:name="com.example.helloandroid.IntentActivity"
             android:label="@string/title_activity_intent" >
+        </activity>
+        <activity
+            android:name="com.example.helloandroid.GoogleMapActivity"
+            android:label="@string/title_activity_google_map" >
         </activity>
     </application>
 

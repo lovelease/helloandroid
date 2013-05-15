@@ -15,8 +15,6 @@
         android:text="@string/hello_world" />
     
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -39,8 +37,6 @@
 	</LinearLayout>
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -68,6 +64,20 @@
 	        android:layout_marginTop="10dp"
 	        android:layout_gravity="center_horizontal"
 	        android:text="@+string/goNextBtn" />
+	    <TextView 
+	        android:id="@+id/txtView_hintMsg_googlemap"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="50dp"
+	        android:layout_gravity="center_horizontal"
+	        android:text="@string/msg_googlemap" />
+	    <Button
+	        android:id="@+id/btn_googlemap"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dp"
+	        android:layout_gravity="center_horizontal"
+	        android:text="@+string/googleMapBtn" />
 
     </LinearLayout>
     
