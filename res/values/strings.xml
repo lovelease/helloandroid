@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- for MainActivity -->
     <string name="app_name">helloandroid</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
@@ -8,13 +9,23 @@
     <string name="okBtn">OK</string>
     <string name="welcome">,welcome!</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_intent">IntentActivity</string>
     <string name="msg_goNext">click the button below to show the message on another page:</string>
     <string name="goNextBtn">Go Next!</string>
-    
     <string name="msg_googlemap">click the button below to see google map:</string>
     <string name="googleMapBtn">Google Map</string>
-    <string name="title_activity_google_map">GoogleMapActivity</string>
+    <string name="msg_baidumap">click the button below to see baidu map:</string>
+    <string name="baiduMapBtn">Baidu Map</string>
+    
     <string name="action_settings">Settings</string>
+    
+    <!-- for IntentActivity -->
+    <string name="title_activity_intent">IntentActivity</string>
+    
+    <!-- for GoogleMapActivity -->
+    <string name="title_activity_google_map">GoogleMapActivity</string>
+    
+    <!-- for BaiduMapActivity -->
+    <string name="title_activity_baidu_map">BaiduMapActivity</string>
+    <string name="target_point">input the tagert address</string>
 
 </resources>

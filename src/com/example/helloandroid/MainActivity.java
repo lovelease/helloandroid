@@ -16,6 +16,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 	TextView showContent;
 	Button goNextBtn;
 	Button googleMapBtn;
+	Button baiduMapBtn;
 	
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {
@@ -27,6 +28,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 		showContent = (TextView)findViewById(R.id.showContent);
 		goNextBtn = (Button)findViewById(R.id.btn_goNext);
 		googleMapBtn = (Button)findViewById(R.id.btn_googlemap);
+		baiduMapBtn = (Button)findViewById(R.id.btn_baidumap);
 		
 		// OK button
 		okBtn.setOnClickListener( this );
@@ -37,6 +39,8 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 		// Google Map
 		googleMapBtn.setOnClickListener( new GoogleMapButtonOnClickLsnr() );
 		
+		// Baidu Map
+		baiduMapBtn.setOnClickListener( new BaiduMapButtonOnClickLsnr() );
 	}
 	
 	@Override
@@ -46,6 +50,14 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 		
 //		String httpUrl = "http://www.baidu.com";
 //		WebDataAccess.webDataAccess(httpUrl, showContent);
+	}
+	
+
+	@Override
+	public boolean onCreateOptionsMenu( Menu menu ) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate( R.menu.activity_main, menu );
+		return true;
 	}
 	
 	class GoNextButtonOnClickLsnr implements Button.OnClickListener{
@@ -69,12 +81,14 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 			startActivity(in);
 		}
 	}
+	
+	class BaiduMapButtonOnClickLsnr implements Button.OnClickListener{
 
-	@Override
-	public boolean onCreateOptionsMenu( Menu menu ) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate( R.menu.activity_main, menu );
-		return true;
+		@Override
+		public void onClick( View v ) {
+			Intent in = new Intent(MainActivity.this, BaiduMapActivity.class);
+			startActivity(in);
+		}
 	}
 
 }
