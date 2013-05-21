@@ -6,54 +6,58 @@
 
     <!-- 版本支持 -->
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="17" />
 
     <!-- 添加屏幕支持(for Baidu Map) -->
-    <supports-screens android:largeScreens="true"
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
         android:normalScreens="true"
-        android:smallScreens="true"
         android:resizeable="true"
-        android:anyDensity="true"/>
-    
+        android:smallScreens="true" />
+
     <!-- different permissions necessary for google and baidu map, select to use whichever you need -->
     <!-- 使用网络功能所需权限 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE">
-	</uses-permission>
-	<uses-permission android:name="android.permission.INTERNET">
-	</uses-permission>
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE">
-	</uses-permission>
-	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE">
-	</uses-permission>
-    
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" >
+    </uses-permission>
+
     <!-- SDK离线地图和cache功能需要读写外部存储器 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE">
-	</uses-permission>
-    
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+    </uses-permission>
+
     <!-- 获取设置信息和详情页直接拨打电话需要以下权限 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE">
-	</uses-permission>
-	<uses-permission android:name="android.permission.CALL_PHONE">
-	</uses-permission>
-    
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.CALL_PHONE" >
+    </uses-permission>
+
     <!-- 使用定位功能所需权限,demo已集成百度定位SDK,不使用定位功能可去掉以下6项 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION">
-	</uses-permission>
-	<permission android:name="android.permission.BAIDU_LOCATION_SERVICE">
-	</permission>
-	<uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE">
-	</uses-permission>
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION">
-	</uses-permission>
-	<uses-permission android:name="android.permission.ACCES_MOCK_LOCATION">
-	</uses-permission>
-	<uses-permission android:name="android.permission.ACCESS_GPS"/>
-	<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"></uses-permission>
-	<uses-permission android:name="android.permission.READ_LOGS"></uses-permission>
-	
-	<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
-    
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" >
+    </uses-permission>
+
+    <permission android:name="android.permission.BAIDU_LOCATION_SERVICE" >
+    </permission>
+
+    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCES_MOCK_LOCATION" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.READ_LOGS" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.VIBRATE" >
+    </uses-permission>
 
     <application
         android:allowBackup="true"
@@ -62,8 +66,11 @@
         android:theme="@style/AppTheme" >
 
         <!-- Baidu location service -->
-        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
-		</service>
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" >
+        </service>
 
         <!-- for Google Map -->
         <uses-library android:name="com.google.android.maps" />
@@ -71,11 +78,6 @@
         <activity
             android:name="com.example.helloandroid.MainActivity"
             android:label="@string/title_activity_main" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.example.helloandroid.IntentActivity"
@@ -87,9 +89,18 @@
         </activity>
         <activity
             android:name="com.example.helloandroid.BaiduMapActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:label="@string/title_activity_baidu_map"
-            android:screenOrientation="sensor"
-            android:configChanges="orientation|keyboardHidden" >
+            android:screenOrientation="sensor" >
+        </activity>
+        <activity
+            android:name="com.example.helloandroid.BasicActivity"
+            android:label="@string/title_activity_basic" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
