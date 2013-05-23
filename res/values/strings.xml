@@ -26,9 +26,6 @@
     <!-- for BaiduMapActivity -->
     <string name="title_activity_baidu_map">BaiduMapActivity</string>
     <string name="target_point">input the tagert address</string>
-    <string name="title_activity_basic">BasicActivity</string>
-    <string name="title_section1">Map Test</string>
-    <string name="title_section2">QRCode Test</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_activity_entrance">helloAndroid</string>
 
 </resources>

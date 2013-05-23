@@ -1,99 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainActivity"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:id="@+id/txtView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/hello_world" />
-    
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        tools:context=".MainActivity" >
-
-	    <EditText
-	        android:id="@+id/nameTxt"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:hint="@+string/hintStr" />
-
-	    <Button
-	        android:id="@+id/btn"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@+string/okBtn" />
-
-	</LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:context=".MainActivity" >
-
-	    <TextView
-	        android:id="@+id/showContent"
-	        android:textIsSelectable="true"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="20dp"
-	        android:gravity="center_horizontal" />
-
-	    <TextView 
-	        android:id="@+id/txtView_hintMsg"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="20dp"
-	        android:layout_gravity="center_horizontal"
-	        android:text="@string/msg_goNext" />
-
-	    <Button
-	        android:id="@+id/btn_goNext"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="10dp"
-	        android:layout_gravity="center_horizontal"
-	        android:text="@+string/goNextBtn" />
-	    <TextView 
-	        android:id="@+id/txtView_hintMsg_googlemap"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="20dp"
-	        android:layout_gravity="center_horizontal"
-	        android:text="@string/msg_googlemap" />
-	    <Button
-	        android:id="@+id/btn_googlemap"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="10dp"
-	        android:layout_gravity="center_horizontal"
-	        android:text="@+string/googleMapBtn" />
-	    <TextView 
-	        android:id="@+id/txtView_hintMsg_baidumap"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="20dp"
-	        android:layout_gravity="center_horizontal"
-	        android:text="@string/msg_baidumap" />
-	    <Button
-	        android:id="@+id/btn_baidumap"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="10dp"
-	        android:layout_gravity="center_horizontal"
-	        android:text="@+string/baiduMapBtn" />
-
-    </LinearLayout>
+    <fragment android:name="com.example.helloandroid.MainFragment"
+            android:id="@+id/mainFragment"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
 </LinearLayout>
