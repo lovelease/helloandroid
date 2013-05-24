@@ -9,9 +9,11 @@ import android.view.Menu;
 
 public class EntranceActivity extends Activity {
 
-	// target activities
+	// target activities,顺序应该与TitlesFragment.TITLES声明的menu顺序保持一致
 	Class<?> mActivities[] = {
 			MainActivity.class
+			,GoogleMapActivity.class
+			,BaiduMapMenuActivity.class
 	};
 	
 	@Override

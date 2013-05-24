@@ -78,11 +78,6 @@
         <activity
             android:name="com.example.helloandroid.MainActivity"
             android:label="@string/title_activity_main" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.example.helloandroid.IntentActivity"
@@ -106,6 +101,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.helloandroid.BaiduMapMenuActivity"
+            android:label="@string/title_activity_baidu_map_menu" >
         </activity>
     </application>
 

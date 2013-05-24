@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- This file is res/layout/activity_entrance.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:context=".EntranceActivity" >
 
     <fragment
         android:id="@+id/titles"

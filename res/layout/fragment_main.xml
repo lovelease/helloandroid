@@ -65,35 +65,6 @@
 	        android:layout_marginTop="10dp"
 	        android:layout_gravity="center_horizontal"
 	        android:text="@+string/goNextBtn" />
-	    <TextView 
-	        android:id="@+id/txtView_hintMsg_googlemap"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="20dp"
-	        android:layout_gravity="center_horizontal"
-	        android:text="@string/msg_googlemap" />
-	    <Button
-	        android:id="@+id/btn_googlemap"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="10dp"
-	        android:layout_gravity="center_horizontal"
-	        android:text="@+string/googleMapBtn" />
-	    <TextView 
-	        android:id="@+id/txtView_hintMsg_baidumap"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="20dp"
-	        android:layout_gravity="center_horizontal"
-	        android:text="@string/msg_baidumap" />
-	    <Button
-	        android:id="@+id/btn_baidumap"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="10dp"
-	        android:layout_gravity="center_horizontal"
-	        android:text="@+string/baiduMapBtn" />
-
     </LinearLayout>
 
 </LinearLayout>

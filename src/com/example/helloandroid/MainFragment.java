@@ -18,8 +18,6 @@ public class MainFragment extends Fragment implements Button.OnClickListener{
 	Button okBtn;
 	TextView showContent;
 	Button goNextBtn;
-	Button googleMapBtn;
-	Button baiduMapBtn;
 	
 	public static MainFragment newInstance(int index) {
 		MainFragment df = new MainFragment();
@@ -66,24 +64,6 @@ public class MainFragment extends Fragment implements Button.OnClickListener{
 		}
 	}
 	
-	class GoogleMapButtonOnClickLsnr implements Button.OnClickListener{
-
-		@Override
-		public void onClick( View v ) {
-			Intent in = new Intent(getActivity(), GoogleMapActivity.class);
-			startActivity(in);
-		}
-	}
-	
-	class BaiduMapButtonOnClickLsnr implements Button.OnClickListener{
-
-		@Override
-		public void onClick( View v ) {
-			Intent in = new Intent(getActivity(), BaiduMapActivity.class);
-			startActivity(in);
-		}
-	}
-	
 	@Override
 	public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
 		
@@ -92,8 +72,6 @@ public class MainFragment extends Fragment implements Button.OnClickListener{
 		okBtn = (Button)rootView.findViewById(R.id.btn);
 		showContent = (TextView)rootView.findViewById(R.id.showContent);
 		goNextBtn = (Button)rootView.findViewById(R.id.btn_goNext);
-		googleMapBtn = (Button)rootView.findViewById(R.id.btn_googlemap);
-		baiduMapBtn = (Button)rootView.findViewById(R.id.btn_baidumap);
 		
 		// OK button
 		okBtn.setOnClickListener( this );
@@ -101,11 +79,6 @@ public class MainFragment extends Fragment implements Button.OnClickListener{
 		// go next!
 		goNextBtn.setOnClickListener( new GoNextButtonOnClickLsnr() );
 		
-		// Google Map
-		googleMapBtn.setOnClickListener( new GoogleMapButtonOnClickLsnr() );
-		
-		// Baidu Map
-		baiduMapBtn.setOnClickListener( new BaiduMapButtonOnClickLsnr() );
 		return rootView;
 	}
 
