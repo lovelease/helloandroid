@@ -1,5 +1,7 @@
 package com.example.helloandroid;
 
+import com.example.helloandroid.barcode.main.BarCodeTestActivity;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.FragmentTransaction;
@@ -14,6 +16,7 @@ public class EntranceActivity extends Activity {
 			MainActivity.class
 			,GoogleMapActivity.class
 			,BaiduMapMenuActivity.class
+			,BarCodeTestActivity.class
 	};
 	
 	@Override

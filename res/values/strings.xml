@@ -28,5 +28,8 @@
     <string name="target_point">input the tagert address</string>
     <string name="title_activity_entrance">helloAndroid</string>
     <string name="title_activity_baidu_map_menu">BaiduMapMenuActivity</string>
+    
+    <!-- for BarCodeTestActivity -->
+    <string name="title_activity_barcode_test">QRCode Test</string>
 
 </resources>
