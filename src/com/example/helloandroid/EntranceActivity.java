@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.view.Menu;
+import android.widget.Toast;
 
 public class EntranceActivity extends Activity {
 
@@ -61,7 +62,7 @@ public class EntranceActivity extends Activity {
 				intent.putExtra("index", index);
 				startActivity(intent);
 			} catch (IndexOutOfBoundsException e) {
-				// do nothing
+				Toast.makeText(getApplicationContext(), "This part is not finished yet!", Toast.LENGTH_SHORT).show();
 			}
 			
 		}

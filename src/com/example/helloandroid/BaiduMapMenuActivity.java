@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class BaiduMapMenuActivity extends Activity {
 
@@ -23,7 +24,7 @@ public class BaiduMapMenuActivity extends Activity {
 		ListView lv = (ListView)findViewById(R.id.menulist);
 		lv.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		lv.setAdapter( new ArrayAdapter<String>(getApplicationContext(),
-				android.R.layout.simple_list_item_1, MENU_LIST) );
+				R.layout.customize_list_item1, MENU_LIST) );
 		lv.setOnItemClickListener( new OnItemClickListener() );
 
 	}
@@ -48,7 +49,7 @@ public class BaiduMapMenuActivity extends Activity {
 				intent.putExtra("index", arg2);
 				startActivity(intent);
 			} catch (IndexOutOfBoundsException e) {
-				// do nothing
+				Toast.makeText(getApplicationContext(), "This part is not finished yet!", Toast.LENGTH_SHORT).show();
 			}
 		}
 		
