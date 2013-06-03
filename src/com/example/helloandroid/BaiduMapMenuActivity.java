@@ -12,9 +12,14 @@ import android.widget.Toast;
 
 public class BaiduMapMenuActivity extends Activity {
 
-	private static final String[] MENU_LIST = { "Map Demo", "Search Demo", "Others" };
+	private static final String[] MENU_LIST = { 
+		"Map Demo"
+		, "Others"
+		};
 	// 各个demo对应的activity，应该和MENU_LIST对应起来
-	private static final Class<?>[] ACTIVITY_LIST = { BaiduMapActivity.class };
+	private static final Class<?>[] ACTIVITY_LIST = {
+		BaiduMapActivity.class
+		};
 	
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {

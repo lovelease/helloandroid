@@ -1,6 +1,7 @@
 package com.example.helloandroid;
 
 import com.example.helloandroid.barcode.main.BarCodeTestActivity;
+import com.example.helloandroid.weatherforecast.activity.WFMainActivity;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -18,6 +19,7 @@ public class EntranceActivity extends Activity {
 			,GoogleMapActivity.class
 			,BaiduMapMenuActivity.class
 			,BarCodeTestActivity.class
+			,WFMainActivity.class
 	};
 	
 	@Override

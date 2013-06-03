@@ -15,6 +15,7 @@ public class TitlesFragment extends ListFragment {
 		, "Google Map Demo"
 		, "Baidu Map Demo"
 		, "QR Code Demo"
+		, "Weather Forecast Demo"
 		, "Others"
 		};
 

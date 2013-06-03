@@ -38,6 +38,13 @@ public final class R {
         public static final int viewfinder_frame=0x7f050016;
         public static final int viewfinder_laser=0x7f050017;
         public static final int viewfinder_mask=0x7f050018;
+        public static final int wf_dark=0x7f050021;
+        public static final int wf_darkgoldenrod=0x7f05001f;
+        public static final int wf_gold=0x7f05001d;
+        public static final int wf_gray=0x7f05001c;
+        public static final int wf_lightgoldenrodyellow=0x7f05001e;
+        public static final int wf_snow=0x7f050020;
+        public static final int wf_white=0x7f05001b;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -50,49 +57,96 @@ public final class R {
         public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int navbar=0x7f020001;
+        public static final int app_bg01=0x7f020000;
+        public static final int app_bg02=0x7f020001;
+        public static final int app_bg03=0x7f020002;
+        public static final int app_bg04=0x7f020003;
+        public static final int ic_launcher=0x7f020004;
+        public static final int item_bg=0x7f020005;
+        public static final int item_foot=0x7f020006;
+        public static final int item_mid=0x7f020007;
+        public static final int item_top=0x7f020008;
+        public static final int menu_city_manager=0x7f020009;
+        public static final int menu_diy=0x7f02000a;
+        public static final int menu_update=0x7f02000b;
+        public static final int navbar=0x7f02000c;
+        public static final int top_bar=0x7f02000d;
+        public static final int weathericon_condition_01=0x7f02000e;
+        public static final int weathericon_condition_02=0x7f02000f;
+        public static final int weathericon_condition_03=0x7f020010;
+        public static final int weathericon_condition_04=0x7f020011;
+        public static final int weathericon_condition_05=0x7f020012;
+        public static final int weathericon_condition_06=0x7f020013;
+        public static final int weathericon_condition_07=0x7f020014;
+        public static final int weathericon_condition_08=0x7f020015;
+        public static final int weathericon_condition_09=0x7f020016;
+        public static final int weathericon_condition_10=0x7f020017;
+        public static final int weathericon_condition_11=0x7f020018;
+        public static final int weathericon_condition_12=0x7f020019;
+        public static final int weathericon_condition_13=0x7f02001a;
+        public static final int weathericon_condition_14=0x7f02001b;
+        public static final int weathericon_condition_15=0x7f02001c;
+        public static final int weathericon_condition_16=0x7f02001d;
+        public static final int weathericon_condition_17=0x7f02001e;
+        public static final int widget_bg=0x7f02001f;
     }
     public static final class id {
-        public static final int action_settings=0x7f070024;
+        public static final int action_settings=0x7f070035;
         /**  Messages IDs 
          */
         public static final int auto_focus=0x7f070000;
         public static final int bmapsView=0x7f07000c;
-        public static final int btn=0x7f07001f;
-        public static final int btn_add_qrcode=0x7f070017;
-        public static final int btn_cancel_scan=0x7f07001b;
-        public static final int btn_goNext=0x7f070022;
-        public static final int btn_scan_barcode=0x7f070014;
+        public static final int btn=0x7f070030;
+        public static final int btn_add_qrcode=0x7f070028;
+        public static final int btn_cancel_scan=0x7f07002c;
+        public static final int btn_goNext=0x7f070033;
+        public static final int btn_scan_barcode=0x7f070025;
+        public static final int cityField=0x7f070017;
+        public static final int currentTemp=0x7f070018;
+        public static final int currentWeather=0x7f07001a;
+        public static final int currentWind=0x7f07001b;
+        public static final int date=0x7f070016;
+        public static final int date_y=0x7f070015;
         public static final int decode=0x7f070001;
         public static final int decode_failed=0x7f070002;
         public static final int decode_succeeded=0x7f070003;
         public static final int details=0x7f07000f;
         public static final int encode_failed=0x7f070004;
         public static final int encode_succeeded=0x7f070005;
-        public static final int et_qr_string=0x7f070016;
-        public static final int iv_qr_image=0x7f070018;
+        public static final int et_qr_string=0x7f070027;
+        public static final int index_d=0x7f07001c;
+        public static final int iv_qr_image=0x7f070029;
         public static final int launch_product_query=0x7f070006;
         public static final int mainActivity=0x7f070012;
         public static final int mainFragment=0x7f070013;
         public static final int mapView=0x7f070010;
-        public static final int menu_settings=0x7f070023;
+        public static final int menu_settings=0x7f070034;
         public static final int menulist=0x7f07000d;
-        public static final int nameTxt=0x7f07001e;
-        public static final int preview_view=0x7f070019;
+        public static final int nameTxt=0x7f07002f;
+        public static final int preview_view=0x7f07002a;
         public static final int quit=0x7f070007;
         public static final int restart_preview=0x7f070008;
         public static final int return_scan_result=0x7f070009;
+        public static final int rootLayout=0x7f070014;
         public static final int search_book_contents_failed=0x7f07000a;
         public static final int search_book_contents_succeeded=0x7f07000b;
-        public static final int showContent=0x7f070020;
+        public static final int showContent=0x7f070031;
         public static final int showMsgFromPrePage=0x7f070011;
-        public static final int text1=0x7f07001c;
+        public static final int temp02=0x7f07001f;
+        public static final int temp03=0x7f070023;
+        public static final int text1=0x7f07002d;
         public static final int titles=0x7f07000e;
-        public static final int tv_scan_result=0x7f070015;
-        public static final int txtView=0x7f07001d;
-        public static final int txtView_hintMsg=0x7f070021;
-        public static final int viewfinder_view=0x7f07001a;
+        public static final int tv_scan_result=0x7f070026;
+        public static final int txtView=0x7f07002e;
+        public static final int txtView_hintMsg=0x7f070032;
+        public static final int viewfinder_view=0x7f07002b;
+        public static final int weather02=0x7f07001e;
+        public static final int weather03=0x7f070022;
+        public static final int weather_icon01=0x7f070019;
+        public static final int weather_icon02=0x7f07001d;
+        public static final int weather_icon03=0x7f070021;
+        public static final int wind02=0x7f070020;
+        public static final int wind03=0x7f070024;
     }
     public static final class layout {
         public static final int activity_baidu_map=0x7f030000;
@@ -101,10 +155,12 @@ public final class R {
         public static final int activity_google_map=0x7f030003;
         public static final int activity_intent=0x7f030004;
         public static final int activity_main=0x7f030005;
-        public static final int barcode_main=0x7f030006;
-        public static final int camera=0x7f030007;
-        public static final int customize_list_item1=0x7f030008;
-        public static final int fragment_main=0x7f030009;
+        public static final int activity_set_city=0x7f030006;
+        public static final int activity_wfmain=0x7f030007;
+        public static final int barcode_main=0x7f030008;
+        public static final int camera=0x7f030009;
+        public static final int customize_list_item1=0x7f03000a;
+        public static final int fragment_main=0x7f03000b;
     }
     public static final class menu {
         public static final int activity_intent=0x7f0a0000;
@@ -113,6 +169,8 @@ public final class R {
         public static final int baidu_map_menu=0x7f0a0003;
         public static final int entrance=0x7f0a0004;
         public static final int google_map=0x7f0a0005;
+        public static final int set_city=0x7f0a0006;
+        public static final int wfmain=0x7f0a0007;
     }
     public static final class raw {
         public static final int beep=0x7f040000;
@@ -148,6 +206,8 @@ public final class R {
          */
         public static final int title_activity_intent=0x7f08000e;
         public static final int title_activity_main=0x7f080006;
+        public static final int title_activity_set_city=0x7f080016;
+        public static final int title_activity_wfmain=0x7f080015;
         public static final int welcome=0x7f080005;
     }
     public static final class style {

@@ -58,9 +58,10 @@
     </uses-permission>
     <uses-permission android:name="android.permission.VIBRATE" >
     </uses-permission>
-    
+
     <!-- QR Code -->
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -116,11 +117,19 @@
             android:label="@string/title_activity_barcode_test" >
         </activity>
         <activity
-            android:configChanges="orientation|keyboardHidden"
             android:name="com.example.helloandroid.barcode.zxing.activity.CaptureActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        <activity
+            android:name="com.example.helloandroid.weatherforecast.activity.WFMainActivity"
+            android:label="@string/title_activity_wfmain" >
+        </activity>
+        <activity
+            android:name="com.example.helloandroid.weatherforecast.activity.SetCityActivity"
+            android:label="@string/title_activity_set_city" >
         </activity>
     </application>
 
