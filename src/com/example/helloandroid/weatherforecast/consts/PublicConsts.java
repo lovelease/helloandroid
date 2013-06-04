@@ -18,5 +18,7 @@ public class PublicConsts {
 	public static final String WALLPAPER_FILE="wallpaper_file";
 	//缓存天气的文件
 	public static final String STORE_WEATHER="store_weather";
+	//标志SetCityActivity intent的original actibity
+	public static final int ORIGIN_SETCITY = 0;
 	
 }
