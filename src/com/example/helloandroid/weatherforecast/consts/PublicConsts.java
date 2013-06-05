@@ -18,5 +18,15 @@ public class PublicConsts {
 	public static final String WALLPAPER_FILE="wallpaper_file";
 	//缓存天气的文件
 	public static final String STORE_WEATHER="store_weather";
+	//记录城市码的文件
+	public static final String CITY_CODE_FILE="city_code";
+	
+	//标志SetCityActivity intent的original actibity
+	public static final int ORIGIN_SETCITY = 0;
+	
+	//SharedPreferences中自定义的WALLPAPER_FILE文件内的数据标识名
+	public static final String SP_WALLPAPER = "wallpaper";
+	//SharedPreferences中自定义的CITY_CODE_FILE文件内的数据标识名
+	public static final String SP_CITYCODE = "code";
 	
 }
