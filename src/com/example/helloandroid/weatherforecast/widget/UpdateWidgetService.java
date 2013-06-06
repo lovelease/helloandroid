@@ -3,6 +3,7 @@ package com.example.helloandroid.weatherforecast.widget;
 import java.util.Date;
 
 import com.example.helloandroid.weatherforecast.activity.SetCityActivity;
+import com.example.helloandroid.weatherforecast.consts.PublicConsts;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -46,8 +47,8 @@ public class UpdateWidgetService extends Service {
 		
 		//======================================================
 		//得到城市码
-		SharedPreferences sp=getSharedPreferences(SetCityActivity.CITY_CODE_FILE, SetCityActivity.MODE_PRIVATE);
-		String cityCode= sp.getString("code", "");
+		SharedPreferences sp=getSharedPreferences(PublicConsts.CITY_CODE_FILE, SetCityActivity.MODE_PRIVATE);
+		String cityCode= sp.getString(PublicConsts.SP_CITYCODE, "");
 		if(cityCode!=null&&cityCode.trim().length() > 0) {
 			Log.i("widget", "===================update  weather===========================");
 			WeatherWidget.updateAppWidget(views, this, appWidgetManager, cityCode);

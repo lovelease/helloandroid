@@ -26,7 +26,6 @@ import android.content.SharedPreferences;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -38,8 +37,6 @@ import android.widget.TextView;
 
 public class SetCityActivity extends Activity {
 
-	//定义的一个记录城市码的SharedPreferences文件名
-	public static final String CITY_CODE_FILE="city_code";
 	//定义的一个自动定位的列表
 	private ListView gpsView;
 	//定义的一个省份可伸缩性的列表
@@ -118,8 +115,8 @@ public class SetCityActivity extends Activity {
             //如果WidgetId有效
             if(mAppWidgetId!=AppWidgetManager.INVALID_APPWIDGET_ID) {
             	//判断它是否是第一次运行
-            	SharedPreferences sp=getSharedPreferences(CITY_CODE_FILE, MODE_PRIVATE);
-            	if(sp.getString("code", null)==null) {
+            	SharedPreferences sp=getSharedPreferences(PublicConsts.CITY_CODE_FILE, MODE_PRIVATE);
+            	if(sp.getString(PublicConsts.SP_CITYCODE, null)==null) {
             		//如果不存在城市码，则说明为第一次运行
             		isFirstRun = true;
             	} else {   		
@@ -128,7 +125,7 @@ public class SetCityActivity extends Activity {
     				RemoteViews views = new RemoteViews(SetCityActivity.this.getPackageName(),
     						R.layout.wf_widget_layout);
     				//得到城市码
-    				String cityCode= sp.getString("code", "");
+    				String cityCode= sp.getString(PublicConsts.SP_CITYCODE, "");
     				if(cityCode!=null&&cityCode.trim().length() > 0) {
     					Log.i("widget", "===================update  weather===========================");
     					//更新widget
@@ -183,8 +180,8 @@ public class SetCityActivity extends Activity {
 	
 	//将res/raw中的城市数据库导入到安装的程序中的database目录下
     public void importInitDatabase() {
-    	//数据库的目录
-    	String dirPath="/data/data/com.example.helloandroid.weatherforecast.activity/databases";
+    	//数据库的目录(/data/data/工程路径（不是该类的包路径com.example.helloandroid.weatherforecast.activity）/databases)
+    	String dirPath="/data/data/com.example.helloandroid/databases";
     	File dir = new File(dirPath);
     	if(!dir.exists()) {
     		dir.mkdir();
@@ -281,9 +278,9 @@ public class SetCityActivity extends Activity {
     	
     	public void run() {
     		//得到一个私有的SharedPreferences文件编辑对象
-			SharedPreferences.Editor edit = getSharedPreferences(CITY_CODE_FILE, MODE_PRIVATE).edit();
+			SharedPreferences.Editor edit = getSharedPreferences(PublicConsts.CITY_CODE_FILE, MODE_PRIVATE).edit();
 			//将城市码保存
-			edit.putString("code", cityCode);
+			edit.putString(PublicConsts.SP_CITYCODE, cityCode);
 			edit.commit();
 
 			//通过判断得到的widgetId是否有效来判断是跳转到WFMainActivity或Widget
@@ -315,12 +312,5 @@ public class SetCityActivity extends Activity {
 			dialog.dismiss();
     	}
     }
-
-	@Override
-	public boolean onCreateOptionsMenu( Menu menu ) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate( R.menu.set_city, menu );
-		return true;
-	}
 
 }

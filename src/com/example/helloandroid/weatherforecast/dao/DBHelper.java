@@ -1,12 +1,16 @@
 package com.example.helloandroid.weatherforecast.dao;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.example.helloandroid.weatherforecast.activity.SetCityActivity;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * 
@@ -15,6 +19,9 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
+	//app中访问城市数据的db文件
+	private static final String DBFILE = "/data/data/com.example.helloandroid/databases/db_weather.db";
+	
 	/**
 	 * 构建一个数据库操作对象
 	 * @param context 当前程序的上下文对象
@@ -43,10 +50,28 @@ public class DBHelper extends SQLiteOpenHelper {
 		String[] columns={"name"};
 		
 		SQLiteDatabase db = getReadableDatabase();
+		
+		//为避免查询出错，在执行查询语句之前，需要先判断db是否存在，不存在的情况下，显式地生成db，方法有以下两种：
+		//1.将查询语句执行两遍，第一遍用于检查db存在性
+//		try {
+//			db.query("provinces", columns, null, null, null, null, null);
+//		} catch (Exception e) {
+//			SetCityActivity sca = new SetCityActivity();
+//			sca.importInitDatabase();
+//		}
+		//2.直接判断db文件的存在性，不存在则生成db文件
+		File file= new File(DBFILE);
+		if ( !file.exists() ) {
+			SetCityActivity sca = new SetCityActivity();
+			sca.importInitDatabase();
+		}
 		//查询获得游标
+		Log.d( "SQL msg:", "========search provinces start=======" );
 		Cursor cursor = db.query("provinces", columns, null, null, null, null, null);
 		columns = null;
 		int count= cursor.getCount();
+		Log.d( "SQL msg:", "========search provinces end=======" );
+		Log.d( "SQL msg:", "count=" + count );
 		String[] provinces = new String[count];
 		count=0;
 		while(!cursor.isLast()) {

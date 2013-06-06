@@ -12,23 +12,28 @@ import com.example.helloandroid.weatherforecast.utils.WebAccessTools;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class WFMainActivity extends Activity {
 
 	//当前Activity的根布局
 	private LinearLayout rootLayout;
-	//用于存储数据的应用程序私有目录(data/data/包名 /shared_prefs/)
-	private static final String PATH = "/data/data/com.example.helloandroid.weatherforecast.activity/shared_prefs/";
+	//用于存储数据的应用程序私有目录(data/data/工程路径（而非该类的包路径）/shared_prefs/)
+	private static final String PATH = "/data/data/com.example.helloandroid/shared_prefs/";
 	
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {
@@ -64,19 +69,19 @@ public class WFMainActivity extends Activity {
         	//getSharedPreferences是android提供的移动存储技术之一，是一种轻量级数据存储方式
         	//详细内容可以参考http://express.ruanko.com/ruanko-express_29/technologyexchange6.html
         	SharedPreferences.Editor editor = getSharedPreferences(PublicConsts.WALLPAPER_FILE, MODE_PRIVATE).edit();
-        	editor.putInt("wellpaper", R.drawable.app_bg01);
+        	editor.putInt(PublicConsts.SP_WALLPAPER, R.drawable.app_bg01);
         	editor.commit();
         	
         	isFirstRun = true;
         } else {
         	//设置壁纸为文件中保存的
         	SharedPreferences sp= getSharedPreferences(PublicConsts.WALLPAPER_FILE, MODE_PRIVATE);
-        	rootLayout.setBackgroundResource(sp.getInt("wellpaper", R.drawable.app_bg01));
+        	rootLayout.setBackgroundResource(sp.getInt(PublicConsts.SP_WALLPAPER, R.drawable.app_bg01));
         }
         
         //得到保存的城市天气
-        SharedPreferences sp = getSharedPreferences(SetCityActivity.CITY_CODE_FILE ,MODE_PRIVATE);
-    	String cityCode= sp.getString("code", "");
+        SharedPreferences sp = getSharedPreferences(PublicConsts.CITY_CODE_FILE ,MODE_PRIVATE);
+    	String cityCode= sp.getString(PublicConsts.SP_CITYCODE, "");
 //    	cityCode = "101070201"; //大连的citycode，用于测试if分支的运行
     	if( cityCode!= null && cityCode.trim().length()!=0) {
     		SharedPreferences shared = getSharedPreferences(PublicConsts.STORE_WEATHER, MODE_PRIVATE);
@@ -98,14 +103,109 @@ public class WFMainActivity extends Activity {
     		startActivityForResult(intent, PublicConsts.ORIGIN_SETCITY);
     	}
 	}
+	
+	@Override //得到设置页面的回退
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	//得到城市的编码
+    	SharedPreferences sp = getSharedPreferences(PublicConsts.CITY_CODE_FILE, MODE_PRIVATE);
+		String cityCode = sp.getString(PublicConsts.SP_CITYCODE, "");
+    	if(cityCode!=null&&cityCode.trim().length()!=0) {
+    		if(data!=null&&data.getBooleanExtra("updateWeather", false)) {
+    			//从网上更新新的天气
+    			setWeatherSituation(cityCode);
+    		} else {
+    			//读取缓存文件中的天气
+    			SharedPreferences shared = getSharedPreferences(PublicConsts.STORE_WEATHER, MODE_PRIVATE);
+    			setWeatherSituation(shared);
+    		}
+    	} else {
+    		//如果是没有城市码的回退，则退出程序
+    		this.finish();
+    	}
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu( Menu menu ) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate( R.menu.wfmain, menu );
+		//得到保存的壁纸
+    	SharedPreferences sp= getSharedPreferences(PublicConsts.WALLPAPER_FILE, MODE_PRIVATE);
+    	SubMenu subMenu = menu.getItem(2).getSubMenu();
+    	MenuItem item = null;
+    	switch(sp.getInt(PublicConsts.SP_WALLPAPER, R.drawable.app_bg01)) {
+    	case R.drawable.app_bg01:
+    		item = subMenu.getItem(0);
+    		item.setChecked(true);
+    		break;
+    	case R.drawable.app_bg02:
+    		item = subMenu.getItem(1);
+    		item.setChecked(true);
+    		break;
+    	case R.drawable.app_bg03:
+    		item = subMenu.getItem(2);
+    		item.setChecked(true);
+    		break;
+    	case R.drawable.app_bg04:
+    		item = subMenu.getItem(3);
+    		item.setChecked(true);
+    		break;
+    	}
 		return true;
 	}
 	
+	//单击菜单方法
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+    	//得到SharedPreferences操作对象更改壁纸
+    	SharedPreferences.Editor editor = getSharedPreferences(PublicConsts.WALLPAPER_FILE, MODE_PRIVATE).edit();
+    	//得到储存城市编码的文件
+    	SharedPreferences sp = getSharedPreferences(PublicConsts.CITY_CODE_FILE, MODE_PRIVATE);
+    	//判断单击菜单的ID
+    	switch(menuItem.getItemId()) {
+    	case R.id.menu_changeCity:
+    		//跳转到设置城市的Activity
+    		Intent intent = new Intent(this, SetCityActivity.class);
+    		startActivityForResult(intent, PublicConsts.ORIGIN_SETCITY);
+    		break;
+    	case R.id.menu_update:
+    		//得到设置的城市码
+            String cityCode = sp.getString(PublicConsts.SP_CITYCODE, "");
+			
+            if( cityCode!= null && cityCode.trim().length()!=0) {
+            	setWeatherSituation(cityCode);
+            }
+            
+			Toast.makeText( this, "天气更新成功", Toast.LENGTH_SHORT ).show();
+    		break;
+    	//更换壁纸
+    	case R.id.wallpaper01:
+    		rootLayout.setBackgroundResource(R.drawable.app_bg01);
+        	editor.putInt(PublicConsts.SP_WALLPAPER, R.drawable.app_bg01);
+        	editor.commit();
+        	menuItem.setChecked(true);
+    		break;
+    	case R.id.wallpaper02:
+    		rootLayout.setBackgroundResource(R.drawable.app_bg02);
+        	editor.putInt(PublicConsts.SP_WALLPAPER, R.drawable.app_bg02);
+        	editor.commit();
+        	menuItem.setChecked(true);
+    		break;
+    	case R.id.wallpaper03:
+    		rootLayout.setBackgroundResource(R.drawable.app_bg03);
+        	editor.putInt(PublicConsts.SP_WALLPAPER, R.drawable.app_bg03);
+        	editor.commit();
+        	menuItem.setChecked(true);
+    		break;
+    	case R.id.wallpaper04:
+    		rootLayout.setBackgroundResource(R.drawable.app_bg04);
+        	editor.putInt(PublicConsts.SP_WALLPAPER, R.drawable.app_bg04);
+        	editor.commit();
+        	menuItem.setChecked(true);
+    		break;
+		default:
+			break;
+    	}
+    	return true;
+    }
 	
 	//根据已定的缓存文件来得到天气情况
     public void setWeatherSituation(SharedPreferences shared) {
@@ -327,6 +427,19 @@ public class WFMainActivity extends Activity {
     	} else {
     		return R.drawable.weathericon_condition_17;
     	}
+    }
+    
+    //得到一个进度对话框
+    public ProgressDialog getProgressDialog(String title, String content) {
+    	//实例化进度条对话框ProgressDialog
+    	ProgressDialog dialog=new ProgressDialog(this);
+    	
+    	//可以不显示标题
+    	dialog.setTitle(title);
+    	dialog.setIndeterminate(true);
+    	dialog.setMessage(content);
+    	dialog.setCancelable(true);
+    	return dialog;
     }
 
 }
