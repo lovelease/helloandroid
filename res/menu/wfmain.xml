@@ -36,27 +36,5 @@
         android:id="@+id/menu_setting"
         android:title="@string/setting"
         android:icon="@drawable/menu_diy" >
-        <menu>
-            <item
-                android:id="@+id/settingmenu_upd_interval"
-                android:title="@string/upd_interval">
-                <menu>
-                    <group
-                        android:id="@+id/upd_interval_group"
-                        android:checkableBehavior="single">
-                        <item
-                            android:id="@+id/upd_interval_1h"
-                            android:title="@string/upd_interval_1h"
-                            android:checked="true"/>
-                        <item
-                            android:id="@+id/upd_interval_2h"
-                            android:title="@string/upd_interval_2h"/>
-                        <item
-                            android:id="@+id/upd_interval_3h"
-                            android:title="@string/upd_interval_3h"/>
-                    </group>
-                </menu>
-            </item>
-        </menu>
     </item>
 </menu>

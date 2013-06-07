@@ -131,16 +131,19 @@
             android:name="com.example.helloandroid.weatherforecast.activity.SetCityActivity"
             android:label="@string/title_activity_set_city" >
             <intent-filter>
+
                 <!-- 设置其为widget组件的配置Activity -->
-		        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
-		    </intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
         </activity>
-        
+
         <!-- 添加widget组件 -->
-        <receiver android:name="com.example.helloandroid.weatherforecast.widget.WeatherWidget" 
-            android:label="@string/app_name"
-            android:icon="@drawable/logo" >
-            <intent-filter >
+        <receiver
+            android:name="com.example.helloandroid.weatherforecast.widget.WeatherWidget"
+            android:icon="@drawable/logo"
+            android:label="@string/app_name" >
+            <intent-filter>
+
                 <!-- 指定AppWidgetProvider接收的广播 -->
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -149,10 +152,15 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/weather_widget" />
         </receiver>
-        
+
         <!-- 自定义的后台更新widget服务 -->
-        <service android:name="com.example.helloandroid.weatherforecast.widget.UpdateWidgetService"></service>
-        
+        <service android:name="com.example.helloandroid.weatherforecast.widget.UpdateWidgetService" >
+        </service>
+
+        <activity
+            android:name="com.example.helloandroid.weatherforecast.activity.AppSettingActivity"
+            android:label="@string/title_activity_app_setting" >
+        </activity>
     </application>
 
 </manifest>

@@ -28,5 +28,13 @@ public class PublicConsts {
 	public static final String SP_WALLPAPER = "wallpaper";
 	//SharedPreferences中自定义的CITY_CODE_FILE文件内的数据标识名
 	public static final String SP_CITYCODE = "code";
+	//默认更新间隔:3h
+	public static Long DEFAULT_UPD_INTERVAL = 3*60*60*1000L;
+	
+	/** =========================store_weather文件项目============================== */
+	//store_weather文件中的记录更新间隔的项目
+	public static final String WEATHER_FILE_UPD_INTERVAL = "updInterval";
+	//store_weather文件中的记录最近更新时间的项目
+	public static final String WEATHER_FILE_LAST_UPDATE = "lastUpdated";
 	
 }
