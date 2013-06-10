@@ -1,12 +1,14 @@
 package com.example.helloandroid.weatherforecast.activity;
 
 import java.io.File;
+import java.util.Date;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.helloandroid.R;
 import com.example.helloandroid.weatherforecast.consts.PublicConsts;
+import com.example.helloandroid.weatherforecast.utils.Utility;
 import com.example.helloandroid.weatherforecast.utils.WebAccessTools;
 
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -69,14 +72,14 @@ public class WFMainActivity extends Activity {
         	//getSharedPreferences是android提供的移动存储技术之一，是一种轻量级数据存储方式
         	//详细内容可以参考http://express.ruanko.com/ruanko-express_29/technologyexchange6.html
         	SharedPreferences.Editor editor = getSharedPreferences(PublicConsts.WALLPAPER_FILE, MODE_PRIVATE).edit();
-        	editor.putInt(PublicConsts.SP_WALLPAPER, R.drawable.app_bg01);
+        	editor.putInt(PublicConsts.SP_WALLPAPER, R.drawable.app_bg04);
         	editor.commit();
         	
         	isFirstRun = true;
         } else {
         	//设置壁纸为文件中保存的
         	SharedPreferences sp= getSharedPreferences(PublicConsts.WALLPAPER_FILE, MODE_PRIVATE);
-        	rootLayout.setBackgroundResource(sp.getInt(PublicConsts.SP_WALLPAPER, R.drawable.app_bg01));
+        	rootLayout.setBackgroundResource(sp.getInt(PublicConsts.SP_WALLPAPER, R.drawable.app_bg04));
         }
         
         //得到保存的城市天气
@@ -86,9 +89,13 @@ public class WFMainActivity extends Activity {
     	if( cityCode!= null && cityCode.trim().length()!=0) {
     		SharedPreferences shared = getSharedPreferences(PublicConsts.STORE_WEATHER, MODE_PRIVATE);
     		long currentTime = System.currentTimeMillis();
-    		//得到天气缓冲文件中的有效期
-    		long vaildTime = shared.getLong("validTime", currentTime);
-    		//比较天气缓存文件中的有效期，如果超时了，则访问网络更新天气
+    		//得到天气缓冲文件中的最近更新时间
+    		long lastUpdated = shared.getLong(PublicConsts.WEATHER_FILE_LAST_UPDATE, currentTime);
+    		//得到天气缓冲文件中的更新间隔
+    		long updInterval = shared.getLong(PublicConsts.WEATHER_FILE_UPD_INTERVAL, PublicConsts.DEFAULT_UPD_INTERVAL);
+    		//计算天气缓存文件的有效期
+    		long vaildTime = lastUpdated + updInterval;
+    		//比较天气缓存文件的有效期，如果超时了，则访问网络更新天气
     		if(vaildTime > currentTime) {
     			//读取缓存文件中的天气
     			setWeatherSituation(shared);
@@ -161,22 +168,33 @@ public class WFMainActivity extends Activity {
     	SharedPreferences sp = getSharedPreferences(PublicConsts.CITY_CODE_FILE, MODE_PRIVATE);
     	//判断单击菜单的ID
     	switch(menuItem.getItemId()) {
+    	
+    	/**选择城市*/
     	case R.id.menu_changeCity:
     		//跳转到设置城市的Activity
     		Intent intent = new Intent(this, SetCityActivity.class);
     		startActivityForResult(intent, PublicConsts.ORIGIN_SETCITY);
     		break;
+    	
+    	/**更新天气*/
     	case R.id.menu_update:
     		//得到设置的城市码
             String cityCode = sp.getString(PublicConsts.SP_CITYCODE, "");
 			
+            //从网上更新天气
             if( cityCode!= null && cityCode.trim().length()!=0) {
             	setWeatherSituation(cityCode);
             }
             
 			Toast.makeText( this, "天气更新成功", Toast.LENGTH_SHORT ).show();
     		break;
-    	//更换壁纸
+    	case R.id.menu_setting:
+    		//跳转到app设置Activity
+    		intent = new Intent(this, AppSettingActivity.class);
+    		startActivity(intent);
+    		break;
+    		
+    	/**更换壁纸*/
     	case R.id.wallpaper01:
     		rootLayout.setBackgroundResource(R.drawable.app_bg01);
         	editor.putInt(PublicConsts.SP_WALLPAPER, R.drawable.app_bg01);
@@ -276,9 +294,14 @@ public class WFMainActivity extends Activity {
 		info= shared.getString("wind3", "");
 		tempText=(TextView)findViewById(R.id.wind03);
 		tempText.setText(info);
+		//最近更新时间
+		long updTime = shared.getLong( PublicConsts.WEATHER_FILE_LAST_UPDATE, System.currentTimeMillis() );
+		String time = Utility.getTime( updTime );
+		tempText=(TextView)findViewById(R.id.lastUpd);
+		tempText.setText(String.valueOf( time ));
     }
     
-    //由城市码设置天气情况,并将得到的信息保存在文件中
+    //由城市码从网上更新天气情况,并将得到的信息保存在文件中
     public void setWeatherSituation(String cityCode) {
     	String url = "http://m.weather.com.cn/data/"+cityCode+".html";
     	String info = new WebAccessTools(this).getWebContent(url);
@@ -384,10 +407,14 @@ public class WFMainActivity extends Activity {
 			tempText.setText(info);
 			editor.putString("wind3", info);
 			
-			//设置一个有效日期为5小时
-			long validTime = System.currentTimeMillis();
-			validTime = validTime + 5*60*60*1000;
-			editor.putLong("validTime", validTime);
+			//最近更新时间
+			long updTime = System.currentTimeMillis();
+			String updTimeStr = Utility.getTime( updTime );
+			tempText=(TextView)findViewById(R.id.lastUpd);
+			tempText.setText(String.valueOf( updTimeStr ));
+			editor.putLong(PublicConsts.WEATHER_FILE_LAST_UPDATE, updTime);
+			
+			
 			
 			//保存
 			editor.commit();
@@ -414,7 +441,7 @@ public class WFMainActivity extends Activity {
     		return R.drawable.weathericon_condition_07;
     	} else if(weather.equals("小雨")||weather.equals("小到中雨")) {
     		return R.drawable.weathericon_condition_08;
-    	} else if(weather.equals("大雨")) {
+    	} else if(weather.equals("大雨")||weather.equals("暴雨")) {
     		return R.drawable.weathericon_condition_09;
     	} else if(weather.equals("雷阵雨")) {
     		return R.drawable.weathericon_condition_10;

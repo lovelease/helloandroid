@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/rootLayout"
-    android:background="@drawable/app_bg02" >
+    android:background="@drawable/app_bg04" >
     
     <LinearLayout
         android:layout_width="fill_parent"
@@ -19,14 +19,16 @@
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:background="@drawable/item_bg">"
+            android:background="@drawable/item_bg">
         <TextView
             android:id="@+id/date_y"
+            android:textColor="@color/wf_white"
             android:text="2011年11月30日（星期三）"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/date"
+            android:textColor="@color/wf_white"
             android:text="农历冬月初六"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -233,11 +235,32 @@
                android:textSize="14dp"
                android:text="北风小于3级" />
         </LinearLayout>
-        
     </LinearLayout>
+    
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="18dp"
+            android:paddingRight="5dp"
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:background="@drawable/item_bg">
+        <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/lastUpd_text"
+	            android:textColor="@color/wf_white"
+	            android:textSize="14dp"/>
+	    <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:id="@+id/lastUpd"
+	            android:textColor="@color/wf_white"
+	            android:textSize="14dp"/>
+	</LinearLayout>
     
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="20px"
-        android:background="@drawable/item_foot" />
+        android:background="@drawable/item_foot" >
+    </LinearLayout>
 </LinearLayout>

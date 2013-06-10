@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="218dip"
     android:orientation="vertical"
     android:background="@drawable/widget_bg"
     android:paddingTop="30dip"
@@ -59,9 +59,9 @@
                     android:textColor="@color/wf_white"
                     android:layout_width="fill_parent"
 		            android:layout_height="wrap_content"
-		            android:layout_gravity="center_vertical" />"
+		            android:layout_gravity="center_vertical" />
             </LinearLayout>
-        </LinearLayout>"
+        </LinearLayout>
     </LinearLayout>
     
     <LinearLayout
@@ -97,4 +97,23 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content" />
     </LinearLayout>
+    
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="right">
+        <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/widget_lastUpd_text"
+	            android:textColor="@color/wf_snow"
+	            android:textSize="10dp"/>
+	    <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:id="@+id/widget_lastUpd"
+	            android:textColor="@color/wf_snow"
+	            android:textSize="10dp"/>
+	</LinearLayout>
 </LinearLayout>

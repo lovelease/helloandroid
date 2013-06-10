@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import com.example.helloandroid.R;
 import com.example.helloandroid.weatherforecast.activity.WFMainActivity;
 import com.example.helloandroid.weatherforecast.consts.PublicConsts;
+import com.example.helloandroid.weatherforecast.utils.Utility;
 import com.example.helloandroid.weatherforecast.utils.WebAccessTools;
 
 import android.app.PendingIntent;
@@ -18,6 +19,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 
 public class WeatherWidget extends AppWidgetProvider {
 	@Override
@@ -56,8 +58,12 @@ public class WeatherWidget extends AppWidgetProvider {
 		
 		SharedPreferences shared = context.getSharedPreferences(PublicConsts.STORE_WEATHER, WFMainActivity.MODE_PRIVATE);
 		long currentTime = System.currentTimeMillis();
-		//得到天气缓冲文件中的有效期
-		long vaildTime = shared.getLong("validTime", currentTime);
+		//得到天气缓冲文件中的最近更新时间
+		long lastUpdated = shared.getLong(PublicConsts.WEATHER_FILE_LAST_UPDATE, currentTime);
+		//得到天气缓冲文件中的更新间隔
+		long updInterval = shared.getLong(PublicConsts.WEATHER_FILE_UPD_INTERVAL, PublicConsts.DEFAULT_UPD_INTERVAL);
+		//计算天气缓存文件的有效期
+		long vaildTime = lastUpdated + updInterval;
 		//比较天气缓存文件中的有效期，如果超时了，则访问网络更新天气
 		if(vaildTime <= currentTime)
 			updateWeather(views, context, cityCode);
@@ -87,6 +93,11 @@ public class WeatherWidget extends AppWidgetProvider {
 		
 		info= sp.getString("weather1", "");
 		views.setTextViewText(R.id.widget_weather, info);
+		
+		//最近更新时间
+		long updTime = sp.getLong( PublicConsts.WEATHER_FILE_LAST_UPDATE, System.currentTimeMillis() );
+		String time = Utility.getTime( updTime );
+		views.setTextViewText(R.id.widget_lastUpd, time);
 		
 		views.setImageViewResource(R.id.widget_icon, sp.getInt("img_title1", R.drawable.weathericon_condition_17));
 	}
@@ -173,10 +184,12 @@ public class WeatherWidget extends AppWidgetProvider {
 			info= json.getString("wind3");
 			editor.putString("wind3", info);
 			
-			//设置一个有效日期为5小时
-			long validTime = System.currentTimeMillis();
-			validTime = validTime + 5*60*60*1000;
-			editor.putLong("validTime", validTime);
+			//更新时间
+			long updTime = System.currentTimeMillis();
+			editor.putLong(PublicConsts.WEATHER_FILE_LAST_UPDATE, updTime);
+			
+			String time = Utility.getTime( updTime );
+			views.setTextViewText(R.id.widget_lastUpd, time);
 			
 			//保存
 			editor.commit();
