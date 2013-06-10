@@ -35,6 +35,7 @@
     <!-- =======================for weather forecast======================== -->
     <string name="auto_add">自动选择</string>
     <string name="hand_add">手动选择</string>
+    <string name="locale_city">定位当前城市</string>
     <string name="filter_hint">输入城市名称</string>
 
     <!-- menu -->

@@ -5,14 +5,30 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import com.example.helloandroid.R;
+import com.example.helloandroid.weatherforecast.adapter.GPSListAdapter;
 import com.example.helloandroid.weatherforecast.adapter.MyListAdapter;
 import com.example.helloandroid.weatherforecast.consts.PublicConsts;
 import com.example.helloandroid.weatherforecast.dao.DBHelper;
+import com.example.helloandroid.weatherforecast.utils.LocationXMLParser;
+import com.example.helloandroid.weatherforecast.utils.WebAccessTools;
 import com.example.helloandroid.weatherforecast.widget.WeatherWidget;
 
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,8 +37,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -63,16 +81,81 @@ public class SetCityActivity extends Activity {
 		provinceList= (ExpandableListView)findViewById(R.id.provinceList);
 		
 		//设置自动定位的适配器
-//        gpsView.setAdapter(new GPSListAdapter(SetCityActivity.this));
+        gpsView.setAdapter(new GPSListAdapter(SetCityActivity.this));
 		
 		//==============================GPS=================================
         //当单击自动定位时
         gpsView.setOnItemClickListener( new OnItemClickListener() {
 
 			@Override
-			public void onItemClick( AdapterView<?> arg0, View arg1, int arg2, long arg3 ) {
-				// TODO Auto-generated method stub
+			public void onItemClick( AdapterView<?> parent, View view,
+					int position, long id ) {
+				TextView localeCity = (TextView)view.findViewById(R.id.locateCityText);
+				localeCity.setText("正在定位...");
 				
+				final LocateHandler handler = new LocateHandler(localeCity);
+				//添加一个线程来处理定位
+				new Thread(){
+					public void run() {
+						Map<Integer, String> cityMap= getLocationCityInfo();
+						//记录匹配的城市的索引
+						int provinceIndex = -1;
+						int cityIndex = -1;
+						//传给处理类的数据封装对象
+						Bundle bundle = new Bundle();
+						if(cityMap!=null) {
+							//得到图家名
+							String country = cityMap.get(LocationXMLParser.COUNTRYNAME);
+							//只匹配中国地区的天气
+							if(country != null && country.equals("中国")){
+								//得到省
+								String province = cityMap.get(LocationXMLParser.ADMINISTRATIVEAREANAME);
+								//得到市
+								String city = cityMap.get(LocationXMLParser.LOCALITYNAME);
+								//得到区县
+								String towns = cityMap.get(LocationXMLParser.DEPENDENTLOCALITYNAME);
+								
+								Log.i("GPS", "============"+province+"."+city+"."+towns+"==============");
+								//将GPS定位的城市与提供能查天气的城市进行匹配
+								StringBuilder matchCity = new StringBuilder(city);
+								matchCity.append(".");
+								matchCity.append(towns);
+								//找到省份
+								for(int i=0; i<groups.length; i++) {
+									if(groups[i].equals(province)) {
+										provinceIndex = i;
+										break;
+									}
+								}
+								//先从区县开始查找匹配的地区
+								for(int j=0; j<childs[provinceIndex].length; j++) {
+									if(childs[provinceIndex][j].equals(matchCity.toString())) {
+										cityIndex = j;
+										break;
+									}
+								}
+								//如果未匹配成功,则换为从城市中查找
+								if(cityIndex == -1) {
+									for(int j=0; j<childs[provinceIndex].length; j++) {
+										if(childs[provinceIndex][j].equals(city)) {
+											cityIndex = j;
+											//匹配成功，则退出循环
+											break;
+										}
+									}
+								}
+							}
+						}
+						//将其用bundle封装，用于传给Handler
+						bundle.putInt("provinceIndex", provinceIndex);
+						bundle.putInt("cityIndex", cityIndex);
+						
+						Message msg = new Message();
+						msg.setData(bundle);
+						//正式交由handler处理
+						handler.sendMessage(msg);
+					}
+				}.start();
 			}
         	
         });
@@ -222,6 +305,64 @@ public class SetCityActivity extends Activity {
     }
     
     /**
+     * 利用GPS功能得到当前位置的城市名
+     */
+    public synchronized Map<Integer, String> getLocationCityInfo() {
+    	LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    	
+    	//设置一个Criteria标准用于过滤LocationProvider
+    	Criteria criteria = new Criteria();
+    	//设置不需要高度信息
+    	criteria.setAltitudeRequired(false);
+    	//设置不需要方位信息
+    	criteria.setBearingRequired(false);
+    	//设置得到的为免费
+    	//criteria.setCostAllowed(false);
+    	
+    	//得到最好的可用的Provider
+    	String provider = locationManager.getBestProvider(criteria, true);
+    	Log.i( "BestProvider", "================" + provider + "================" );
+    	
+    	//得到当前的位置对象
+    	Location location = locationManager.getLastKnownLocation(provider);
+    	if(location!=null) {
+    		double latitude = location.getLatitude();  //得到经度
+        	double longitude = location.getLongitude(); //得到纬度
+        	//根据经纬度得到详细的地址信息
+        	//定义的一个网络访问工具类
+            WebAccessTools webTools = new WebAccessTools(this);
+        	String addressContext = webTools.getWebContent("http://maps.google.cn/maps/geo?output=xml&q="+latitude+","+longitude);
+        	//解析地址信息
+        	SAXParserFactory spf = SAXParserFactory.newInstance();
+        	try {
+    			SAXParser parser = spf.newSAXParser();
+    			XMLReader reader = parser.getXMLReader();
+    			LocationXMLParser handler = new LocationXMLParser();
+    			reader.setContentHandler(handler);
+    			
+    			StringReader read = new StringReader(addressContext);
+    			// 创建新的输入源SAX 解析器将使用 InputSource 对象来确定如何读取 XML 输入
+    			InputSource source = new InputSource(read);
+    			
+    			//开始解析
+    			reader.parse(source);
+    			//判断是否存在地址
+    			if(handler.hasAddress()) {
+    				return handler.getDetailAddress();
+    			}
+    		} catch (ParserConfigurationException e) {
+    			e.printStackTrace();
+    		} catch (SAXException e) {
+    			e.printStackTrace();
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+    	}
+    	
+    	return null;
+    }
+    
+    /**
      * 用于处理装载伸缩性列表的处理类
      */
     private class MyHandler extends Handler {
@@ -258,6 +399,39 @@ public class SetCityActivity extends Activity {
 				}
 	        	
 	        });
+		}
+    }
+    
+    /**
+     * 用于处理用户的定位信息
+     */
+    private class LocateHandler extends Handler {
+    	//记录定位的文本视图组件
+    	private TextView textView;
+    	
+    	public LocateHandler(TextView textView) {
+    		this.textView = textView;
+    	}
+    	
+		@Override
+		public void handleMessage(Message msg) {
+			Bundle data = msg.getData();
+			int provinceIndex = data.getInt("provinceIndex");
+			int cityIndex = data.getInt("cityIndex");
+			//判断定位匹配是否成功
+			if(provinceIndex >=0 && provinceIndex < groups.length && 
+					cityIndex >=0 && cityIndex < childs[provinceIndex].length) {
+				//显示定位的城市
+				textView.setText(childs[provinceIndex][cityIndex]);
+				
+				//自动跳至天气的显示界面MainActivity
+				Dialog dialog = getProgressDialog("", "正在加载天气...");
+				dialog.show();
+				GoToWFMainActivity thread = new GoToWFMainActivity(cityCodes[provinceIndex][cityIndex], dialog);
+				thread.start();
+			} else {
+				textView.setText("定位失败！");
+			}
 		}
     }
     

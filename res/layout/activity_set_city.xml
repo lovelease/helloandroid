@@ -11,19 +11,21 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/wf_gray"
+        android:background="@color/wf_darkgray"
         android:textColor="@color/wf_white"
         android:text="@string/auto_add" />
     
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dip"
+        android:paddingBottom="10dip"
         android:id="@+id/gps_view" />
 
     <TextView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@color/wf_gray"
+    android:background="@color/wf_darkgray"
     android:textColor="@color/wf_white"
     android:text="@string/hand_add" />
           
@@ -38,6 +40,8 @@
             android:drawSelectorOnTop="false"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="10dip"
+            android:paddingBottom="10dip"
             android:layout_above="@+id/filterField" />
         
         <!-- 快捷查找城市的过滤框 -->
