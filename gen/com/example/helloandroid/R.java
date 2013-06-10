@@ -92,7 +92,11 @@ public final class R {
         public static final int widget_bg=0x7f020020;
     }
     public static final class id {
+<<<<<<< HEAD
         public static final int action_settings=0x7f080044;
+=======
+        public static final int action_settings=0x7f080043;
+>>>>>>> branch 'master' of https://github.com/lovelease/helloandroid.git
         /**  Messages IDs 
          */
         public static final int auto_focus=0x7f080000;
@@ -124,11 +128,19 @@ public final class R {
         public static final int mainActivity=0x7f080013;
         public static final int mainFragment=0x7f080014;
         public static final int mapView=0x7f080011;
+<<<<<<< HEAD
         public static final int menu_changeCity=0x7f080045;
         public static final int menu_setting=0x7f08004d;
         public static final int menu_settings=0x7f080043;
         public static final int menu_update=0x7f080046;
         public static final int menu_wallpaper=0x7f080047;
+=======
+        public static final int menu_changeCity=0x7f080044;
+        public static final int menu_setting=0x7f08004c;
+        public static final int menu_settings=0x7f080042;
+        public static final int menu_update=0x7f080045;
+        public static final int menu_wallpaper=0x7f080046;
+>>>>>>> branch 'master' of https://github.com/lovelease/helloandroid.git
         public static final int menulist=0x7f08000e;
         public static final int nameTxt=0x7f080035;
         public static final int preview_view=0x7f080030;
@@ -151,6 +163,7 @@ public final class R {
         public static final int txtView=0x7f080034;
         public static final int txtView_hintMsg=0x7f080038;
         public static final int viewfinder_view=0x7f080031;
+<<<<<<< HEAD
         public static final int wallpaper01=0x7f080049;
         public static final int wallpaper02=0x7f08004a;
         public static final int wallpaper03=0x7f08004b;
@@ -167,6 +180,23 @@ public final class R {
         public static final int widget_data02=0x7f08003d;
         public static final int widget_icon=0x7f08003b;
         public static final int widget_lastUpd=0x7f080042;
+=======
+        public static final int wallpaper01=0x7f080048;
+        public static final int wallpaper02=0x7f080049;
+        public static final int wallpaper03=0x7f08004a;
+        public static final int wallpaper04=0x7f08004b;
+        public static final int wallpaper_group=0x7f080047;
+        public static final int weather02=0x7f080023;
+        public static final int weather03=0x7f080027;
+        public static final int weather_icon01=0x7f08001e;
+        public static final int weather_icon02=0x7f080022;
+        public static final int weather_icon03=0x7f080026;
+        public static final int weather_rootLayout=0x7f08003a;
+        public static final int widget_city=0x7f08003f;
+        public static final int widget_data01=0x7f08003c;
+        public static final int widget_data02=0x7f08003d;
+        public static final int widget_icon=0x7f08003b;
+>>>>>>> branch 'master' of https://github.com/lovelease/helloandroid.git
         public static final int widget_temp=0x7f080041;
         public static final int widget_time=0x7f08003e;
         public static final int widget_weather=0x7f080040;
@@ -214,7 +244,11 @@ public final class R {
         public static final int baiduMapBtn=0x7f09000c;
         /**  menu 
          */
+<<<<<<< HEAD
         public static final int change_city=0x7f09001a;
+=======
+        public static final int change_city=0x7f090018;
+>>>>>>> branch 'master' of https://github.com/lovelease/helloandroid.git
         public static final int filter_hint=0x7f090017;
         public static final int goNextBtn=0x7f090008;
         public static final int googleMapBtn=0x7f09000a;
@@ -227,9 +261,17 @@ public final class R {
         public static final int msg_goNext=0x7f090007;
         public static final int msg_googlemap=0x7f090009;
         public static final int okBtn=0x7f090004;
+<<<<<<< HEAD
         public static final int setting=0x7f09001d;
+=======
+        public static final int setting=0x7f09001b;
+>>>>>>> branch 'master' of https://github.com/lovelease/helloandroid.git
         public static final int target_point=0x7f090011;
+<<<<<<< HEAD
         public static final int title_activity_app_setting=0x7f090028;
+=======
+        public static final int title_activity_app_setting=0x7f090026;
+>>>>>>> branch 'master' of https://github.com/lovelease/helloandroid.git
         /**  for BaiduMapActivity 
          */
         public static final int title_activity_baidu_map=0x7f090010;
@@ -245,6 +287,7 @@ public final class R {
          */
         public static final int title_activity_intent=0x7f09000e;
         public static final int title_activity_main=0x7f090006;
+<<<<<<< HEAD
         public static final int title_activity_set_city=0x7f090027;
         public static final int title_activity_wfmain=0x7f090026;
         /**  submenu list 
@@ -261,6 +304,24 @@ public final class R {
         public static final int wallpaper_text02=0x7f090023;
         public static final int wallpaper_text03=0x7f090024;
         public static final int wallpaper_text04=0x7f090025;
+=======
+        public static final int title_activity_set_city=0x7f090025;
+        public static final int title_activity_wfmain=0x7f090024;
+        /**  submenu list 
+         */
+        public static final int upd_interval=0x7f09001c;
+        /**  更新间隔子选项 
+         */
+        public static final int upd_interval_1h=0x7f09001d;
+        public static final int upd_interval_2h=0x7f09001e;
+        public static final int upd_interval_3h=0x7f09001f;
+        public static final int update_weather=0x7f090019;
+        public static final int wallpaper=0x7f09001a;
+        public static final int wallpaper_text01=0x7f090020;
+        public static final int wallpaper_text02=0x7f090021;
+        public static final int wallpaper_text03=0x7f090022;
+        public static final int wallpaper_text04=0x7f090023;
+>>>>>>> branch 'master' of https://github.com/lovelease/helloandroid.git
         public static final int welcome=0x7f090005;
         public static final int widget_lastUpd_text=0x7f090019;
     }
