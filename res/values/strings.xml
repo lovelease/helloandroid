@@ -36,7 +36,8 @@
     <string name="auto_add">自动选择</string>
     <string name="hand_add">手动选择</string>
     <string name="filter_hint">输入城市名称</string>
-    
+
+    <!-- menu -->
     <string name="lastUpd_text">最后更新时间：</string>
     <string name="widget_lastUpd_text">最后更新：</string>
 
@@ -53,7 +54,15 @@
     <string name="upd_interval_1h">1小时</string>
     <string name="upd_interval_2h">2小时</string>
     <string name="upd_interval_3h">3小时</string>
-    
+    <string name="setting">设置</string>
+
+    <!-- submenu list -->
+    <string name="upd_interval">更新间隔</string>
+
+    <!-- 更新间隔子选项 -->
+    <string name="upd_interval_1h">1小时</string>
+    <string name="upd_interval_2h">2小时</string>
+    <string name="upd_interval_3h">3小时</string>
     <string name="wallpaper_text01">青色小路</string>
     <string name="wallpaper_text02">夕日晚霞</string>
     <string name="wallpaper_text03">深色海洋</string>
