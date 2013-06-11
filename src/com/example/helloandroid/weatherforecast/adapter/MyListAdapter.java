@@ -214,6 +214,7 @@ public class MyListAdapter extends BaseExpandableListAdapter implements Filterab
 		
 		textView.setLayoutParams(lp);
 		textView.setTextSize(18);
+		textView.setHeight( 24 );
 		textView.setTextColor(Color.GRAY);
 		textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
 		textView.setPadding(50, 0, 0, 0);
