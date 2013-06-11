@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import com.example.helloandroid.R;
 import com.example.helloandroid.weatherforecast.consts.PublicConsts;
+import com.example.helloandroid.weatherforecast.service.LogService;
 import com.example.helloandroid.weatherforecast.utils.Utility;
 import com.example.helloandroid.weatherforecast.utils.WebAccessTools;
 
@@ -46,6 +47,10 @@ public class WFMainActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         		WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView( R.layout.activity_wfmain );
+		
+		//启动后台写日志服务，将日志记录到SDCard中，方便实机测试
+		Intent startService =  new Intent (this,LogService.class);
+		startService( startService );
 		
         // 从android 4.0开始，主程序中不再能访问网络，增加以下设置以解决此问题
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()

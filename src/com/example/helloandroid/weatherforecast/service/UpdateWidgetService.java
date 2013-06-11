@@ -1,9 +1,10 @@
-package com.example.helloandroid.weatherforecast.widget;
+package com.example.helloandroid.weatherforecast.service;
 
 import java.util.Date;
 
 import com.example.helloandroid.weatherforecast.activity.SetCityActivity;
 import com.example.helloandroid.weatherforecast.consts.PublicConsts;
+import com.example.helloandroid.weatherforecast.widget.WeatherWidget;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

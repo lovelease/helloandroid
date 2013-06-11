@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import com.example.helloandroid.R;
 import com.example.helloandroid.weatherforecast.activity.WFMainActivity;
 import com.example.helloandroid.weatherforecast.consts.PublicConsts;
+import com.example.helloandroid.weatherforecast.service.UpdateWidgetService;
 import com.example.helloandroid.weatherforecast.utils.Utility;
 import com.example.helloandroid.weatherforecast.utils.WebAccessTools;
 
