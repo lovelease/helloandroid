@@ -17,18 +17,28 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import com.example.helloandroid.R;
+import com.example.helloandroid.weatherforecast.activity.SetCityActivity;
+import com.example.helloandroid.weatherforecast.consts.PublicConsts;
+import com.example.helloandroid.weatherforecast.widget.WeatherWidget;
+
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 /**
  * 日志服务，日志默认会存储在SDcar里如果没有SDcard会存储在内存中的安装目录下面。
@@ -84,6 +94,26 @@ public class LogService extends Service {
 		return null;
 	}
 
+	// This is the new method that instead of the old onStart method on the pre-2.0 platform.
+	@Override //开始服务，执行更新widget组件的操作
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		
+		Log.i("LogService", "===================onStartCommand===========================");
+		
+		Notification notification = new Notification(R.drawable.logo,
+                "wf log service is running",
+                System.currentTimeMillis());
+		PendingIntent pi=PendingIntent.getService(this, 0, intent, 0);
+		notification.setLatestEventInfo(this, "WF Log Service",
+		        "wf log service is running！", pi);
+		
+		//让该service前台运行，避免手机休眠时系统自动杀掉该服务
+		//如果 id 为 0 ，那么状态栏的 notification 将不会显示。
+		startForeground(0, notification);
+		
+		return Service.START_REDELIVER_INTENT;
+	}
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -800,7 +830,9 @@ public class LogService extends Service {
 	
 	@Override
 	public void onDestroy() {
-		super.onDestroy();
+		//对于通过startForeground启动的service，需要通过stopForeground来取消前台运行状态
+		stopForeground(true);
+//		super.onDestroy();
 		recordLogServiceLog("LogService onDestroy");
 		if (writer != null) {
 			try {
