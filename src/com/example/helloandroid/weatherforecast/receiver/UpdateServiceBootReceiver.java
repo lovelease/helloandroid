@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Descriptions
+ * Descriptions 开机启动UpdateWidgetService服务的接收器
+ * Android系统启动后会发送一个android.intent.action.BOOT_COMPLETED广播
+ * 通过在Manifest.xml里面配置该接收器，来指定开机启动的服务
  *
  * @version 2013-6-13
  * @author PSET

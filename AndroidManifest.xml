@@ -68,6 +68,9 @@
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
+    <!-- 设置用户应用开机自动启动所需的权限 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> 
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -168,10 +171,15 @@
             android:process=":remote" >
         </service>
         <!-- 自定义的后台更新widget服务 -->
-        <service android:name="com.example.helloandroid.weatherforecast.service.UpdateWidgetService" >
+        <!-- 为了消去加上android:priority="1000"后出现的警告信息，可以设置android:exported属性，指示该服务是否能够被其他应用程序组件调用或跟它交互 -->
+        <service android:name="com.example.helloandroid.weatherforecast.service.UpdateWidgetService" android:exported="false" >
+            <!-- 已经将该service修改为前台服务了，很大程度上解决了被系统回收的问题，但是时间长了还是会被回收，所以再同时结合下面这个方法 -->
+            <!-- 为防止Service被系统回收，可以通过提高优先级解决，1000是最高优先级，数字越小，优先级越低 -->
+            <intent-filter android:priority="1000"></intent-filter>
         </service>
         <!-- 向SDCard内写日志的服务 -->
-        <service android:name="com.example.helloandroid.weatherforecast.service.LogService" >
+        <service android:name="com.example.helloandroid.weatherforecast.service.LogService" android:exported="false">
+            <intent-filter android:priority="1000"></intent-filter>
         </service>
 
         
