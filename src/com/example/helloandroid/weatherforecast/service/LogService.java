@@ -3,6 +3,7 @@ package com.example.helloandroid.weatherforecast.service;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -130,14 +131,12 @@ public class LogService extends Service {
 							+	"MyApp" + File.separator + "log";
 		createLogDir();
 		
-		/* ******************************************************
 		try {
 			writer = new OutputStreamWriter(new FileOutputStream(
 					LOG_SERVICE_LOG_PATH, true));
 		} catch (FileNotFoundException e) {
 			Log.e(TAG, e.getMessage(), e);
 		}
-		* ******************************************************/
 		PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
 		wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
 		
@@ -467,7 +466,8 @@ public class LogService extends Service {
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(), MEMORY_LOG_FILE_MONITOR_INTERVAL, sender);
 		Log.d(TAG, "deployLogSizeMonitorTask() succ !");
-		//recordLogServiceLog("deployLogSizeMonitorTask() succ ,start time is " + calendar.getTime().toLocaleString());
+		Calendar calendar = Calendar.getInstance();
+		recordLogServiceLog("deployLogSizeMonitorTask() succ ,start time is " + calendar.getTime().toLocaleString());
 	}
 	
 	/**
@@ -548,14 +548,14 @@ public class LogService extends Service {
 	private void moveLogfile() {
 		if (!Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
-			//recordLogServiceLog("move file failed, sd card does not mount");
+			recordLogServiceLog("move file failed, sd card does not mount");
 			return;
 		}
 		File file = new File(LOG_PATH_SDCARD_DIR);
 		if (!file.isDirectory()) {
 			boolean mkOk = file.mkdirs();
 			if (!mkOk) {
-				//recordLogServiceLog("move file failed,dir is not created succ");
+				recordLogServiceLog("move file failed,dir is not created succ");
 				return;
 			}
 		}
@@ -565,7 +565,8 @@ public class LogService extends Service {
 			File[] allFiles = file.listFiles();
 			for (File logFile : allFiles) {
 				String fileName = logFile.getName();
-				if (logServiceLogName.equals(fileName)) {
+				//TODO 感觉这里应该加！，只有文件名为logServiceLogName时才将该文件copy到sdcard
+				if (!logServiceLogName.equals(fileName)) {
 					continue;
 				}
 				//String createDateInfo = getFileNameWithoutExtension(fileName);
@@ -573,14 +574,14 @@ public class LogService extends Service {
 							+ File.separator + fileName));
 				if (isSucc) {
 					logFile.delete();
-					//recordLogServiceLog("move file success,log name is:"+fileName);
+					recordLogServiceLog("move file success,log name is:"+fileName);
 				}
 			}
 		}
 	}
 
 	/**
-	 * 删除内存下过期的日志
+	 * 删除SDCard下过期的日志
 	 */
 	private void deleteSDcardExpiredLog() {
 		File file = new File(LOG_PATH_SDCARD_DIR);
