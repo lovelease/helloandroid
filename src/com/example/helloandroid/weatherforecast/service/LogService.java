@@ -33,6 +33,7 @@ import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
 import com.example.helloandroid.R;
+import com.example.helloandroid.weatherforecast.consts.PublicConsts;
 
 /**
  * 日志服务，日志默认会存储在SDcar里,如果没有SDcard会存储在内存中的安装目录下面。
@@ -95,7 +96,7 @@ public class LogService extends Service {
 	@Override //开始服务，执行更新widget组件的操作
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		
-		Log.i(TAG, "===================onStartCommand===========================");
+		Log.i(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "===================onStartCommand===========================");
 		
 		Notification notification = new Notification(R.drawable.logo,
                 "wf log service is running",
@@ -131,13 +132,13 @@ public class LogService extends Service {
 			writer = new OutputStreamWriter(new FileOutputStream(
 					LOG_SERVICE_LOG_PATH, true));
 		} catch (FileNotFoundException e) {
-			Log.e(TAG, e.getMessage(), e);
+			Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + e.getMessage(), e);
 		}
 		PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
 		wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
 		
 		CURR_LOG_TYPE = getCurrLogType();
-		Log.i(TAG, "LogService onCreate");
+		Log.i(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "LogService onCreate");
 	}
 	
 	private void register(){
@@ -200,7 +201,7 @@ public class LogService extends Service {
 		
 		public LogCollectorThread(){
 			super("LogCollectorThread");
-			Log.d(TAG, "LogCollectorThread is create");
+			Log.d(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "LogCollectorThread is create");
 		}
 		
 		@Override
@@ -248,17 +249,17 @@ public class LogService extends Service {
 			errorGobbler.start();
 			outputGobbler.start();
 			if (proc.waitFor() != 0) {
-				Log.e(TAG, " clearLogCache proc.waitFor() != 0");
+				Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + " clearLogCache proc.waitFor() != 0");
 				recordLogServiceLog("clearLogCache clearLogCache proc.waitFor() != 0");
 			}
 		} catch (Exception e) {
-			Log.e(TAG, "clearLogCache failed", e);
+			Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "clearLogCache failed", e);
 			recordLogServiceLog("clearLogCache failed");
 		} finally {
 			try {
 				proc.destroy();
 			} catch (Exception e) {
-				Log.e(TAG, "clearLogCache failed", e);
+				Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "clearLogCache failed", e);
 				recordLogServiceLog("clearLogCache failed");
 			}
 		}
@@ -366,17 +367,17 @@ public class LogService extends Service {
 			errorConsumer.start();
 			outputConsumer.start();
 			if (proc.waitFor() != 0) {
-				Log.e(TAG, "getAllProcess proc.waitFor() != 0");
+				Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "getAllProcess proc.waitFor() != 0");
 				recordLogServiceLog("getAllProcess proc.waitFor() != 0");
 			}
 		} catch (Exception e) {
-			Log.e(TAG, "getAllProcess failed", e);
+			Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "getAllProcess failed", e);
 			recordLogServiceLog("getAllProcess failed");
 		} finally {
 			try {
 				proc.destroy();
 			} catch (Exception e) {
-				Log.e(TAG, "getAllProcess failed", e);
+				Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "getAllProcess failed", e);
 				recordLogServiceLog("getAllProcess failed");
 			}
 		}
@@ -408,7 +409,7 @@ public class LogService extends Service {
 			recordLogServiceLog("start collecting the log,and log name is:"+logFileName);
 			// process.waitFor();
 		} catch (Exception e) {
-			Log.e(TAG, "CollectorThread == >" + e.getMessage(), e);
+			Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "CollectorThread == >" + e.getMessage(), e);
 			recordLogServiceLog("CollectorThread == >" + e.getMessage());
 		}
 	}
@@ -422,11 +423,11 @@ public class LogService extends Service {
 		String logFileName = sdf.format(new Date()) + ".log";// 日志文件名称
 		if(CURR_LOG_TYPE == MEMORY_TYPE){
 			CURR_INSTALL_LOG_NAME = logFileName;
-			Log.d(TAG, "Log stored in memory, the path is:"+LOG_PATH_MEMORY_DIR + File.separator + logFileName);
+			Log.d(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "Log stored in memory, the path is:"+LOG_PATH_MEMORY_DIR + File.separator + logFileName);
 			return LOG_PATH_MEMORY_DIR + File.separator + logFileName;
 		}else{
 			CURR_INSTALL_LOG_NAME = null;
-			Log.d(TAG, "Log stored in SDcard, the path is:"+LOG_PATH_SDCARD_DIR + File.separator + logFileName);
+			Log.d(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "Log stored in SDcard, the path is:"+LOG_PATH_SDCARD_DIR + File.separator + logFileName);
 			return LOG_PATH_SDCARD_DIR + File.separator + logFileName;
 		}
 	}
@@ -462,7 +463,7 @@ public class LogService extends Service {
 		PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(), MEMORY_LOG_FILE_MONITOR_INTERVAL, sender);
-		Log.d(TAG, "deployLogSizeMonitorTask() succ !");
+		Log.d(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "deployLogSizeMonitorTask() succ !");
 		Calendar calendar = Calendar.getInstance();
 		recordLogServiceLog("deployLogSizeMonitorTask() succ ,start time is " + calendar.getTime().toLocaleString());
 	}
@@ -477,7 +478,7 @@ public class LogService extends Service {
 		PendingIntent sender = PendingIntent.getBroadcast(this, 0, intent, 0);
 		am.cancel(sender);
 		
-		Log.d(TAG, "canelLogSizeMonitorTask() succ");
+		Log.d(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "canelLogSizeMonitorTask() succ");
 	}
 	
 	/**
@@ -491,9 +492,9 @@ public class LogService extends Service {
 			if(!file.exists()){
 				return;
 			}
-			Log.d(TAG, "checkLog() ==> The size of the log is too big?");
+			Log.d(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "checkLog() ==> The size of the log is too big?");
 			if(file.length() >= MEMORY_LOG_FILE_MAX_SIZE){
-				Log.d(TAG, "The log's size is too big!");
+				Log.d(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "The log's size is too big!");
 				new LogCollectorThread().start();
 			}
 		}
@@ -520,7 +521,7 @@ public class LogService extends Service {
 					file.createNewFile();
 				}
 			} catch (IOException e) {
-				Log.e(TAG, e.getMessage(), e);
+				Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + e.getMessage(), e);
 			}
 		}
 		
@@ -590,7 +591,7 @@ public class LogService extends Service {
 				String createDateInfo = getFileNameWithoutExtension(fileName);
 				if (canDeleteSDLog(createDateInfo)) {
 					logFile.delete();
-					Log.d(TAG, "delete expired log success,the log path is:"
+					Log.d(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "delete expired log success,the log path is:"
 							+ logFile.getAbsolutePath());
 
 				}
@@ -612,7 +613,7 @@ public class LogService extends Service {
 			Date createDate = sdf.parse(createDateStr);
 			canDel = createDate.before(expiredDate);
 		} catch (ParseException e) {
-			Log.e(TAG, e.getMessage(), e);
+			Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + e.getMessage(), e);
 			canDel = false;
 		}
 		return canDel;
@@ -634,7 +635,7 @@ public class LogService extends Service {
 					continue;
 				}
 				_file.delete();
-				Log.d(TAG, "delete expired log success,the log path is:"+_file.getAbsolutePath());
+				Log.d(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "delete expired log success,the log path is:"+_file.getAbsolutePath());
 			}
 		}
 	}
@@ -665,7 +666,7 @@ public class LogService extends Service {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log.e(TAG, e.getMessage(), e);
+			Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + e.getMessage(), e);
 			recordLogServiceLog("copy file fail");
 			return false;
 		} finally{
@@ -678,7 +679,7 @@ public class LogService extends Service {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-				Log.e(TAG, e.getMessage(), e);
+				Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + e.getMessage(), e);
 				recordLogServiceLog("copy file fail");
 				return false;
 			}
@@ -701,7 +702,7 @@ public class LogService extends Service {
 				writer.flush();
 			} catch (IOException e) {
 				e.printStackTrace();
-				Log.e(TAG, e.getMessage(), e);
+				Log.e(TAG, PublicConsts.MY_APP_LOG_SYMBOL + e.getMessage(), e);
 			}
 		}
 	}
@@ -767,13 +768,13 @@ public class LogService extends Service {
 			
 			if(Intent.ACTION_MEDIA_UNMOUNTED.equals(intent.getAction())){	//存储卡被卸载
 				if(CURR_LOG_TYPE == SDCARD_TYPE){
-					Log.d(TAG, "SDcar is UNMOUNTED");
+					Log.d(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "SDcar is UNMOUNTED");
 					CURR_LOG_TYPE = MEMORY_TYPE;
 					new LogCollectorThread().start();
 				}
 			}else{															//存储卡被挂载
 				if(CURR_LOG_TYPE == MEMORY_TYPE){
-					Log.d(TAG, "SDcar is MOUNTED");
+					Log.d(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "SDcar is MOUNTED");
 					CURR_LOG_TYPE = SDCARD_TYPE;
 					new LogCollectorThread().start();
 					

@@ -55,6 +55,7 @@ import android.widget.TextView;
 
 public class SetCityActivity extends Activity {
 
+	private static final String TAG = "SetCityActivity";
 	//定义的一个自动定位的列表
 	private ListView gpsView;
 	//定义的一个省份可伸缩性的列表
@@ -115,7 +116,7 @@ public class SetCityActivity extends Activity {
 								//得到区县
 								String towns = cityMap.get(LocationXMLParser.DEPENDENTLOCALITYNAME);
 								
-								Log.i("GPS", "============"+province+"."+city+"."+towns+"==============");
+								Log.i(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "============"+province+"."+city+"."+towns+"==============");
 								//将GPS定位的城市与提供能查天气的城市进行匹配
 								StringBuilder matchCity = new StringBuilder(city);
 								matchCity.append(".");
@@ -210,7 +211,7 @@ public class SetCityActivity extends Activity {
     				//得到城市码
     				String cityCode= sp.getString(PublicConsts.SP_CITYCODE, "");
     				if(cityCode!=null&&cityCode.trim().length() > 0) {
-    					Log.i("widget", "===================update  weather===========================");
+    					Log.i(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "===================update  weather===========================");
     					//更新widget
     					WeatherWidget.updateAppWidget(views, SetCityActivity.this, appWidgetManager, cityCode);
     				}
@@ -321,7 +322,7 @@ public class SetCityActivity extends Activity {
     	
     	//得到最好的可用的Provider
     	String provider = locationManager.getBestProvider(criteria, true);
-    	Log.i( "BestProvider", "================" + provider + "================" );
+    	Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "================" + provider + "================" );
     	
     	//得到当前的位置对象
     	Location location = locationManager.getLastKnownLocation(provider);
@@ -471,7 +472,7 @@ public class SetCityActivity extends Activity {
 				RemoteViews views = new RemoteViews(SetCityActivity.this.getPackageName(),
 						R.layout.wf_widget_layout);
 				//更新widget
-				Log.i("widget", "===================update  weather===========================");
+				Log.i(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "===================update  weather===========================");
 				//更新widget
 				WeatherWidget.updateAppWidget(views, SetCityActivity.this, appWidgetManager, cityCode);
 				

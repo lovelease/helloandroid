@@ -13,7 +13,10 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
+import com.example.helloandroid.weatherforecast.consts.PublicConsts;
+
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 /**
@@ -26,6 +29,7 @@ import android.widget.Toast;
  */
 public class WebAccessTools {
 
+	private static final String TAG = "WebAccessTools";
 	/**
 	 * 当前的Context上下文对象
 	 */
@@ -47,6 +51,7 @@ public class WebAccessTools {
 	 * @return web服务器响应的内容，为<code>String</code>类型，当访问失败时，返回为null
 	 */
 	public  String getWebContent(String url) {
+		Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "web access url：" + url );
 		//创建一个http请求对象
 		HttpGet request = new HttpGet(url);
 		//创建HttpParams以用来设置HTTP参数

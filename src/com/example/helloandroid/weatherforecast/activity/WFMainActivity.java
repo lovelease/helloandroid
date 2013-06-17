@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 public class WFMainActivity extends Activity {
 
+	private static final String TAG = "WFMainActivity";
 	//当前Activity的根布局
 	private LinearLayout rootLayout;
 	//用于存储数据的应用程序私有目录(data/data/工程路径（而非该类的包路径）/shared_prefs/)
@@ -311,7 +312,7 @@ public class WFMainActivity extends Activity {
     	String url = "http://m.weather.com.cn/data/"+cityCode+".html";
     	String info = new WebAccessTools(this).getWebContent(url);
     	if (info == null || 0 == info.length()) {
-    		Log.e( "neterr", "从网络获取天气情报失败" );
+    		Log.e( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "从网络获取天气情报失败" );
     		return ;
     	}
     	try {
@@ -431,7 +432,7 @@ public class WFMainActivity extends Activity {
     
     //由天气情况得到图片
     public static int getWeatherBitMapResource(String weather) {
-    	Log.i("weather_info", "============="+weather+"===============");
+    	Log.i(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "============="+weather+"===============");
     	if(weather.equals("晴")) {
     		return R.drawable.weathericon_condition_01;
     	} else if(weather.equals("多云")) {

@@ -25,6 +25,7 @@ import android.util.Log;
  */
 public class Utility {
 	
+	private static final String TAG = "Utility";
 	//时间格式：hh:mm:ss
 	public static final String DATE_FORMAT_HH_MM_SS = "hh:mm:ss";
 
@@ -51,7 +52,7 @@ public class Utility {
 		//日志输出
 		Long updInterval = shared.getLong( PublicConsts.WEATHER_FILE_UPD_INTERVAL, 0L );
 		String outputTime = (updInterval == 0L ? "设置失败" : String.valueOf( updInterval ));
-		Log.i( "setUpdInterval", "===============set update interval to:" + outputTime + "===================" );
+		Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "===============set update interval to:" + outputTime + "===================" );
 	}
 	
 	/**

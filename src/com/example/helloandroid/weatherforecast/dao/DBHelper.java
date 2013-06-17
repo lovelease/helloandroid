@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.helloandroid.weatherforecast.activity.SetCityActivity;
+import com.example.helloandroid.weatherforecast.consts.PublicConsts;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -19,6 +20,7 @@ import android.util.Log;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
+	private static final String TAG = "DBHelper";
 	//app中访问城市数据的db文件
 	private static final String DBFILE = "/data/data/com.example.helloandroid/databases/db_weather.db";
 	
@@ -66,12 +68,12 @@ public class DBHelper extends SQLiteOpenHelper {
 			sca.importInitDatabase();
 		}
 		//查询获得游标
-		Log.d( "SQL msg:", "========search provinces start=======" );
+		Log.d( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "========search provinces start=======" );
 		Cursor cursor = db.query("provinces", columns, null, null, null, null, null);
 		columns = null;
 		int count= cursor.getCount();
-		Log.d( "SQL msg:", "========search provinces end=======" );
-		Log.d( "SQL msg:", "count=" + count );
+		Log.d( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "========search provinces end=======" );
+		Log.d( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "count=" + count );
 		String[] provinces = new String[count];
 		count=0;
 		while(!cursor.isLast()) {
