@@ -145,8 +145,14 @@
         </activity>
 
         <!-- ===================== Receivers ==================== -->
-        <!-- 设定UpdateService开机自动启动的接收器 -->
+        <!-- 设定UpdateWidgetService开机自动启动的接收器 -->
     	<receiver android:name="com.example.helloandroid.weatherforecast.receiver.UpdateServiceBootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+        <!-- 设定LogService开机自动启动的接收器 -->
+        <receiver android:name="com.example.helloandroid.weatherforecast.receiver.LogServiceBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>

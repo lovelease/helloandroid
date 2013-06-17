@@ -2,15 +2,9 @@ package com.example.helloandroid.weatherforecast.widget;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.example.helloandroid.R;
-import com.example.helloandroid.weatherforecast.activity.WFMainActivity;
-import com.example.helloandroid.weatherforecast.consts.PublicConsts;
-import com.example.helloandroid.weatherforecast.service.UpdateWidgetService;
-import com.example.helloandroid.weatherforecast.utils.Utility;
-import com.example.helloandroid.weatherforecast.utils.WebAccessTools;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -20,9 +14,17 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.TextView;
+
+import com.example.helloandroid.R;
+import com.example.helloandroid.weatherforecast.activity.WFMainActivity;
+import com.example.helloandroid.weatherforecast.consts.PublicConsts;
+import com.example.helloandroid.weatherforecast.service.UpdateWidgetService;
+import com.example.helloandroid.weatherforecast.utils.Utility;
+import com.example.helloandroid.weatherforecast.utils.WebAccessTools;
 
 public class WeatherWidget extends AppWidgetProvider {
+	
+	private static final String TAG = "WeatherWidget";
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
@@ -73,9 +75,9 @@ public class WeatherWidget extends AppWidgetProvider {
 		
 		//更新时间
 		Date date = new Date();
-		SimpleDateFormat foramt = new SimpleDateFormat("hh:mm");
+		SimpleDateFormat foramt = new SimpleDateFormat("HH:mm");
 		String timeText = foramt.format(date);
-		Log.i("widget", "===================update  time======"+timeText+"=====================");
+		Log.i(TAG, "===================update  time======"+timeText+"=====================");
 		views.setTextViewText(R.id.widget_time , timeText);
 	}
 

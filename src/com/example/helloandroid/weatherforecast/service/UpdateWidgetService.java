@@ -30,6 +30,7 @@ public class UpdateWidgetService extends Service {
 	//记录定时管理器
 	AlarmManager alarm;
 	PendingIntent pintent;
+	private static final String TAG = "UpdateWidgetService";
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -40,7 +41,7 @@ public class UpdateWidgetService extends Service {
 	@Override //开始服务，执行更新widget组件的操作
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		
-		Log.i("widget Service", "===================update  widget===========================");
+		Log.i(TAG, "===================update  widget===========================");
 		//得到widget的布局对象
 		RemoteViews views = WeatherWidget.getWeatherView(this);
 		//得到AppWidgetManager widget管理器
@@ -53,7 +54,7 @@ public class UpdateWidgetService extends Service {
 		SharedPreferences sp=getSharedPreferences(PublicConsts.CITY_CODE_FILE, SetCityActivity.MODE_PRIVATE);
 		String cityCode= sp.getString(PublicConsts.SP_CITYCODE, "");
 		if(cityCode!=null&&cityCode.trim().length() > 0) {
-			Log.i("widget", "===================update  weather===========================");
+			Log.i(TAG, "===================update  weather===========================");
 			WeatherWidget.updateAppWidget(views, this, appWidgetManager, cityCode);
 		}
 		//======================================================
@@ -77,7 +78,7 @@ public class UpdateWidgetService extends Service {
 		
 		//让该service前台运行，避免手机休眠时系统自动杀掉该服务
 		//如果 id 为 0 ，那么状态栏的 notification 将不会显示。
-		startForeground(startId, notification);
+		startForeground(0, notification);
 		
 		//计时器
 		alarm=(AlarmManager)getSystemService(Context.ALARM_SERVICE);

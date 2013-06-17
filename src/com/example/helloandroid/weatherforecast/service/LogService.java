@@ -18,36 +18,32 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import com.example.helloandroid.R;
-import com.example.helloandroid.weatherforecast.activity.SetCityActivity;
-import com.example.helloandroid.weatherforecast.consts.PublicConsts;
-import com.example.helloandroid.weatherforecast.widget.WeatherWidget;
-
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.util.Log;
-import android.widget.RemoteViews;
+
+import com.example.helloandroid.R;
 
 /**
- * 日志服务，日志默认会存储在SDcar里如果没有SDcard会存储在内存中的安装目录下面。
+ * 日志服务，日志默认会存储在SDcar里,如果没有SDcard会存储在内存中的安装目录下面。
  * 1.本服务默认在SDcard中每天生成一个日志文件,
  * 2.如果有SDCard的话会将之前内存中的文件拷贝到SDCard中
  * 3.如果没有SDCard，在安装目录下只保存当前在写日志
  * 4.SDcard的装载卸载动作会在步骤2,3中切换
  * 5.SDcard中的日志文件只保存7天
+ * 6.监视App运行的LogCat日志（sdcard mounted）:sdcard/MyApp/log/yyyy-MM-dd HHmmss.log（默认）
+ * 7.监视App运行的LogCat日志（sdcard unmounted）:/data/data/包名/files/log/yyyy-MM-dd HHmmss.log
+ * 8.本service的运行日志：/data/data/包名/files/log/Log.log
  * @author Administrator
  * 
  */
@@ -99,7 +95,7 @@ public class LogService extends Service {
 	@Override //开始服务，执行更新widget组件的操作
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		
-		Log.i("LogService", "===================onStartCommand===========================");
+		Log.i(TAG, "===================onStartCommand===========================");
 		
 		Notification notification = new Notification(R.drawable.logo,
                 "wf log service is running",
@@ -110,7 +106,7 @@ public class LogService extends Service {
 		
 		//让该service前台运行，避免手机休眠时系统自动杀掉该服务
 		//如果 id 为 0 ，那么状态栏的 notification 将不会显示。
-		startForeground(0, notification);
+		startForeground(startId, notification);
 		
 		return Service.START_REDELIVER_INTENT;
 	}
@@ -282,21 +278,22 @@ public class LogService extends Service {
 		}
 		String packName = this.getPackageName();
 		String myUser = getAppUser(packName, allProcList);
-		/*
 		recordLogServiceLog("app user is:"+myUser);
-		recordLogServiceLog("========================");
+		recordLogServiceLog("============= START TYPING PROC LIST INFO ==============");
+		//只打印本App和logcat的进程信息，其他进程信息不打印
 		for (ProcessInfo processInfo : allProcList) {
-			recordLogServiceLog(processInfo.toString());
+			if (myUser.equals( processInfo.user ) || "logcat".equals( processInfo.name )) {
+				recordLogServiceLog(processInfo.toString());
+			}
 		}
-		recordLogServiceLog("========================");
-		*/
+		recordLogServiceLog("============= END TYPING PROC LIST INFO ==============");
 		for (ProcessInfo processInfo : allProcList) {
 			if (processInfo.name.toLowerCase().equals("logcat")
 					&& processInfo.user.equals(myUser)) {
 				android.os.Process.killProcess(Integer
 						.parseInt(processInfo.pid));
-				//recordLogServiceLog("kill another logcat process success,the process info is:"
-				//		+ processInfo);
+				recordLogServiceLog("kill another logcat process success,the process info is:"
+						+ processInfo);
 			}
 		}
 	}
@@ -394,7 +391,7 @@ public class LogService extends Service {
 		List<String> commandList = new ArrayList<String>();
 		commandList.add("logcat");
 		commandList.add("-f");
-		//commandList.add(LOG_PATH_INSTALL_DIR + File.separator + logFileName);
+//		commandList.add(LOG_PATH_INSTALL_DIR + File.separator + logFileName);
 		commandList.add(getLogPath());
 		commandList.add("-v");
 		commandList.add("time");
@@ -515,7 +512,6 @@ public class LogService extends Service {
 			}
 		}
 
-		/* ************************************
 		file = new File(LOG_SERVICE_LOG_PATH);
 		if (!file.exists()) {
 			try {
@@ -527,7 +523,6 @@ public class LogService extends Service {
 				Log.e(TAG, e.getMessage(), e);
 			}
 		}
-		* ************************************/
 		
 		if (Environment.getExternalStorageState().equals(
 				Environment.MEDIA_MOUNTED)) {
@@ -565,8 +560,8 @@ public class LogService extends Service {
 			File[] allFiles = file.listFiles();
 			for (File logFile : allFiles) {
 				String fileName = logFile.getName();
-				//TODO 感觉这里应该加！，只有文件名为logServiceLogName时才将该文件copy到sdcard
-				if (!logServiceLogName.equals(fileName)) {
+				//只copy App的LocCat日志文件【yyyy-MM-dd HHmmss.log】到sdcard,本LogService的运行日志【Log.log】不做copy对象
+				if (logServiceLogName.equals(fileName)) {
 					continue;
 				}
 				//String createDateInfo = getFileNameWithoutExtension(fileName);
