@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -283,7 +284,7 @@ public class LogService extends Service {
 		recordLogServiceLog("============= START TYPING PROC LIST INFO ==============");
 		//只打印本App和logcat的进程信息，其他进程信息不打印
 		for (ProcessInfo processInfo : allProcList) {
-			if (myUser.equals( processInfo.user ) || "logcat".equals( processInfo.name )) {
+			if (processInfo.user.equals( myUser ) || "logcat".equals( processInfo.name )) {
 				recordLogServiceLog(processInfo.toString());
 			}
 		}
@@ -307,11 +308,19 @@ public class LogService extends Service {
 	 * @return
 	 */
 	private String getAppUser(String packName, List<ProcessInfo> allProcList) {
+		recordLogServiceLog("============== START getAppUser ==============");
+		recordLogServiceLog("packName:" + packName);
 		for (ProcessInfo processInfo : allProcList) {
+			recordLogServiceLog("allProcList:" + processInfo.toString() );
+		}
+		for (ProcessInfo processInfo : allProcList) {
+			recordLogServiceLog("allProcList:" + processInfo.toString() );
 			if (processInfo.name.equals(packName)) {
+				recordLogServiceLog("============== END getAppUser NORMALLY ==============");
 				return processInfo.user;
 			}
 		}
+		recordLogServiceLog("============== END getAppUser EXCEPTIONALLY ==============");
 		return null;
 	}
 
