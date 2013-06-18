@@ -312,10 +312,11 @@ public class LogService extends Service {
 		recordLogServiceLog("packName:" + packName);
 		for (ProcessInfo processInfo : allProcList) {
 			recordLogServiceLog("allProcList:" + processInfo.toString() );
+			Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "allProcList:" + processInfo.toString() );
 		}
 		for (ProcessInfo processInfo : allProcList) {
-			recordLogServiceLog("allProcList:" + processInfo.toString() );
 			if (processInfo.name.equals(packName)) {
+				Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "my process:" + processInfo.toString() );
 				recordLogServiceLog("============== END getAppUser NORMALLY ==============");
 				return processInfo.user;
 			}
