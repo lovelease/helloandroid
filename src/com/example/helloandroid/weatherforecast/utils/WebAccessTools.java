@@ -38,11 +38,14 @@ public class WebAccessTools {
 	 * 构造一个网站访问工具类
 	 * @param context 记录当前Activity中的Context上下文对象
 	 */
-	/**
-	 * 
-	 */
 	public WebAccessTools(Context context) {
 		this.context = context;
+	}
+	
+	/**
+	 * 无context对象的构造方法供本地调用
+	 */
+	public WebAccessTools() {
 	}
 	
 	/**
@@ -70,8 +73,12 @@ public class WebAccessTools {
 				String content = EntityUtils.toString(response.getEntity());
 				return content;
 			} else {
-				//网连接失败，使用Toast显示提示信息
-				Toast.makeText(context, "网络访问失败，请检查网络设置!", Toast.LENGTH_SHORT).show();
+				if (context != null) {
+					//网连接失败，使用Toast显示提示信息
+					Toast.makeText(context, "网络访问失败，请检查网络设置!", Toast.LENGTH_SHORT).show();
+				} else {
+					System.out.println("网络访问失败");
+				}
 			}
 			
 		}catch(Exception e) {
