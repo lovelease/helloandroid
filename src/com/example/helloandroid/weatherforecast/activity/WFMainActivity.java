@@ -3,15 +3,19 @@ package com.example.helloandroid.weatherforecast.activity;
 import java.io.File;
 import java.util.Date;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.helloandroid.R;
 import com.example.helloandroid.weatherforecast.consts.PublicConsts;
 import com.example.helloandroid.weatherforecast.service.LogService;
+import com.example.helloandroid.weatherforecast.utils.LogUtil;
 import com.example.helloandroid.weatherforecast.utils.Utility;
 import com.example.helloandroid.weatherforecast.utils.WebAccessTools;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.app.Activity;
@@ -53,7 +57,10 @@ public class WFMainActivity extends Activity {
 		Intent startService =  new Intent (this,LogService.class);
 		startService( startService );
 		
-        // 从android 4.0开始，主程序中不再能访问网络，增加以下设置以解决此问题
+		/**
+		 * 从android 4.0开始，主程序中不再能访问网络，增加以下设置可以允许主线程访问网络，但是建议主线程中不要访问网络
+		 */
+		/*************************************************************************
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
                 .detectDiskWrites()
@@ -66,7 +73,8 @@ public class WFMainActivity extends Activity {
                 .penaltyLog()
                 .penaltyDeath()
                 .build());
-        
+        ***************************************************************************/
+		
 		rootLayout = (LinearLayout)findViewById(R.id.rootLayout);
 		
 		//通过检查程序中的缓存文件判断程序是否是第一次运行
@@ -309,125 +317,9 @@ public class WFMainActivity extends Activity {
     
     //由城市码从网上更新天气情况,并将得到的信息保存在文件中
     public void setWeatherSituation(String cityCode) {
-    	String url = "http://m.weather.com.cn/data/"+cityCode+".html";
-    	String info = new WebAccessTools(this).getWebContent(url);
-    	if (info == null || 0 == info.length()) {
-    		Log.e( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "从网络获取天气情报失败" );
-    		return ;
-    	}
-    	try {
-    	    //==========================解析JSON得到天气===========================
-			JSONObject json=new JSONObject(info).getJSONObject("weatherinfo");
-			TextView tempText = null;
-			ImageView imageView=null;
-			int weather_icon = 0;
-			
-			//建立一个缓存天气的文件
-			SharedPreferences.Editor editor = getSharedPreferences(PublicConsts.STORE_WEATHER, MODE_PRIVATE).edit();
-			
-			//得到城市
-			info=json.getString("city");
-			tempText=(TextView)findViewById(R.id.cityField);
-			tempText.setText(info);
-			editor.putString("city", info);
-			
-			//得到阳历日期
-			info= json.getString("date_y") ;
-			info= info+"("+json.getString("week")+")";
-			tempText=(TextView)findViewById(R.id.date_y);
-			tempText.setText(info);
-			editor.putString("date_y", info);
-			//得到农历
-			info= json.getString("date");
-			tempText=(TextView)findViewById(R.id.date);
-			tempText.setText(info);
-			editor.putString("date", info);
-			//得到温度
-			info= json.getString("temp1");
-			tempText=(TextView)findViewById(R.id.currentTemp);
-			tempText.setText(info);
-			editor.putString("temp1", info);
-			//得到天气
-			info= json.getString("weather1");
-			tempText=(TextView)findViewById(R.id.currentWeather);
-			tempText.setText(info);
-			editor.putString("weather1", info);
-			//天气图标
-			info= json.getString("img_title1");
-			imageView=(ImageView)findViewById(R.id.weather_icon01);
-			weather_icon = getWeatherBitMapResource(info);
-			imageView.setImageResource(weather_icon);
-			editor.putInt("img_title1", weather_icon);
-			//得到风向
-			info= json.getString("wind1");
-			tempText=(TextView)findViewById(R.id.currentWind);
-			tempText.setText(info);
-			editor.putString("wind1", info);
-			//得到建议
-			info= json.getString("index_d");
-			tempText=(TextView)findViewById(R.id.index_d);
-			tempText.setText(info);
-			editor.putString("index_d", info);
-			
-			//得到明天的天气
-			info= json.getString("weather2");
-			tempText=(TextView)findViewById(R.id.weather02);
-			tempText.setText(info);
-			editor.putString("weather2", info);
-			//明天的图标
-			info= json.getString("img_title2");
-			imageView=(ImageView)findViewById(R.id.weather_icon02);
-			weather_icon = getWeatherBitMapResource(info);
-			imageView.setImageResource(weather_icon);
-			editor.putInt("img_title2", weather_icon);
-			//明天的气温
-			info= json.getString("temp2");
-			tempText=(TextView)findViewById(R.id.temp02);
-			tempText.setText(info);
-			editor.putString("temp2", info);
-			//明天的风力
-			info= json.getString("wind2");
-			tempText=(TextView)findViewById(R.id.wind02);
-			tempText.setText(info);
-			editor.putString("wind2", info);
-			
-			//后天的天气
-			info= json.getString("weather3");
-			tempText=(TextView)findViewById(R.id.weather03);
-			tempText.setText(info);
-			editor.putString("weather3", info);
-			//后天天气图标
-			info= json.getString("img_title3");
-			imageView=(ImageView)findViewById(R.id.weather_icon03);
-			weather_icon = getWeatherBitMapResource(info);
-			imageView.setImageResource(weather_icon);
-			editor.putInt("img_title3", weather_icon);
-			//后天的气温
-			info= json.getString("temp3");
-			tempText=(TextView)findViewById(R.id.temp03);
-			tempText.setText(info);
-			editor.putString("temp3", info);
-			//后天的风力
-			info= json.getString("wind3");
-			tempText=(TextView)findViewById(R.id.wind03);
-			tempText.setText(info);
-			editor.putString("wind3", info);
-			
-			//最近更新时间
-			long updTime = System.currentTimeMillis();
-			String updTimeStr = Utility.getTime( updTime );
-			tempText=(TextView)findViewById(R.id.lastUpd);
-			tempText.setText(String.valueOf( updTimeStr ));
-			editor.putLong(PublicConsts.WEATHER_FILE_LAST_UPDATE, updTime);
-			
-			
-			
-			//保存
-			editor.commit();
-			
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+    	//执行异步线程，访问网络，因为从android 4.0开始，主程序中不再能访问网络
+    	UpdWeatherNetwork uwn = new UpdWeatherNetwork();
+    	uwn.execute( cityCode );
     }
     
     //由天气情况得到图片
@@ -473,6 +365,179 @@ public class WFMainActivity extends Activity {
     	dialog.setMessage(content);
     	dialog.setCancelable(true);
     	return dialog;
+    }
+    
+    /**
+     * 将通过网络获取天气的部分写成异步线程，因为主线程内不应该有网络访问，否则可能造成主线程响应时间过长,
+     * 甚至出现background ANR（application not responsed),导致MainActivity一直卡在生成画面的地方，人机无法继续交互，用户体验差
+     *
+     * @version 2013-6-19
+     * @author PSET
+     * @since JDK1.6
+     *
+     */
+    public class UpdWeatherNetwork extends AsyncTask<String, Integer, String> {
+
+    	/** 
+		 * onPreExecute方法用于在执行后台任务前做一些UI操作 
+		 */
+        @Override  
+        protected void onPreExecute() {  
+             
+        }
+        
+		/** 
+		 * doInBackground方法用于执行后台任务,不可在此方法内修改UI
+		 * @param params citycode
+		 * @return String 网络数据
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
+		@Override
+		protected String doInBackground( String... params ) {
+			LogUtil.i( TAG, "doInBackground method called" );
+			String cityCode = params[0];
+			String url = "http://m.weather.com.cn/data/"+cityCode+".html";
+	    	String info = new WebAccessTools(WFMainActivity.this).getWebContent(url);
+			return info;
+		}
+		
+		/** 
+		 * onProgressUpdate方法用于更新进度信息  
+		 */
+        @Override  
+        protected void onProgressUpdate(Integer... progresses) {
+        	
+        }
+		
+		/** 
+		 * onPostExecute方法用于在doInBackground执行完后台任务后更新UI,显示结果
+		 * @param result citycode
+		 * @return String 网络数据
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
+		@Override  
+        protected void onPostExecute(String result) {
+			LogUtil.i( TAG, "onPostExecute method called" );
+			//==========================解析JSON得到天气===========================
+			try {
+				JSONObject json=new JSONObject(result).getJSONObject("weatherinfo");
+				TextView tempText = null;
+				ImageView imageView=null;
+				int weather_icon = 0;
+				
+				//建立一个缓存天气的文件
+				SharedPreferences.Editor editor = getSharedPreferences(PublicConsts.STORE_WEATHER, MODE_PRIVATE).edit();
+				
+				//得到城市
+				result=json.getString("city");
+				tempText=(TextView)findViewById(R.id.cityField);
+				tempText.setText(result);
+				editor.putString("city", result);
+				
+				//得到阳历日期
+				result= json.getString("date_y") ;
+				result= result+"("+json.getString("week")+")";
+				tempText=(TextView)findViewById(R.id.date_y);
+				tempText.setText(result);
+				editor.putString("date_y", result);
+				//得到农历
+				result= json.getString("date");
+				tempText=(TextView)findViewById(R.id.date);
+				tempText.setText(result);
+				editor.putString("date", result);
+				//得到温度
+				result= json.getString("temp1");
+				tempText=(TextView)findViewById(R.id.currentTemp);
+				tempText.setText(result);
+				editor.putString("temp1", result);
+				//得到天气
+				result= json.getString("weather1");
+				tempText=(TextView)findViewById(R.id.currentWeather);
+				tempText.setText(result);
+				editor.putString("weather1", result);
+				//天气图标
+				result= json.getString("img_title1");
+				imageView=(ImageView)findViewById(R.id.weather_icon01);
+				weather_icon = getWeatherBitMapResource(result);
+				imageView.setImageResource(weather_icon);
+				editor.putInt("img_title1", weather_icon);
+				//得到风向
+				result= json.getString("wind1");
+				tempText=(TextView)findViewById(R.id.currentWind);
+				tempText.setText(result);
+				editor.putString("wind1", result);
+				//得到建议
+				result= json.getString("index_d");
+				tempText=(TextView)findViewById(R.id.index_d);
+				tempText.setText(result);
+				editor.putString("index_d", result);
+				
+				//得到明天的天气
+				result= json.getString("weather2");
+				tempText=(TextView)findViewById(R.id.weather02);
+				tempText.setText(result);
+				editor.putString("weather2", result);
+				//明天的图标
+				result= json.getString("img_title2");
+				imageView=(ImageView)findViewById(R.id.weather_icon02);
+				weather_icon = getWeatherBitMapResource(result);
+				imageView.setImageResource(weather_icon);
+				editor.putInt("img_title2", weather_icon);
+				//明天的气温
+				result= json.getString("temp2");
+				tempText=(TextView)findViewById(R.id.temp02);
+				tempText.setText(result);
+				editor.putString("temp2", result);
+				//明天的风力
+				result= json.getString("wind2");
+				tempText=(TextView)findViewById(R.id.wind02);
+				tempText.setText(result);
+				editor.putString("wind2", result);
+				
+				//后天的天气
+				result= json.getString("weather3");
+				tempText=(TextView)findViewById(R.id.weather03);
+				tempText.setText(result);
+				editor.putString("weather3", result);
+				//后天天气图标
+				result= json.getString("img_title3");
+				imageView=(ImageView)findViewById(R.id.weather_icon03);
+				weather_icon = getWeatherBitMapResource(result);
+				imageView.setImageResource(weather_icon);
+				editor.putInt("img_title3", weather_icon);
+				//后天的气温
+				result= json.getString("temp3");
+				tempText=(TextView)findViewById(R.id.temp03);
+				tempText.setText(result);
+				editor.putString("temp3", result);
+				//后天的风力
+				result= json.getString("wind3");
+				tempText=(TextView)findViewById(R.id.wind03);
+				tempText.setText(result);
+				editor.putString("wind3", result);
+				
+				//最近更新时间
+				long updTime = System.currentTimeMillis();
+				String updTimeStr = Utility.getTime( updTime );
+				tempText=(TextView)findViewById(R.id.lastUpd);
+				tempText.setText(String.valueOf( updTimeStr ));
+				editor.putLong(PublicConsts.WEATHER_FILE_LAST_UPDATE, updTime);
+				
+				//保存
+				editor.commit();
+			} catch (JSONException e) {
+				LogUtil.e( TAG, e.getStackTrace().toString() );
+			}
+			
+		}
+		
+		/** 
+		 * onCancelled方法用于在取消执行中的任务时更改UI
+		 */
+        @Override  
+        protected void onCancelled() {  
+            
+        }
     }
 
 }
