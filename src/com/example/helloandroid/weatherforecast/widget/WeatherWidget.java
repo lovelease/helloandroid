@@ -12,19 +12,25 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 
 import com.example.helloandroid.R;
 import com.example.helloandroid.weatherforecast.activity.WFMainActivity;
 import com.example.helloandroid.weatherforecast.consts.PublicConsts;
 import com.example.helloandroid.weatherforecast.service.UpdateWidgetService;
+import com.example.helloandroid.weatherforecast.utils.LogUtil;
 import com.example.helloandroid.weatherforecast.utils.Utility;
 import com.example.helloandroid.weatherforecast.utils.WebAccessTools;
 
 public class WeatherWidget extends AppWidgetProvider {
 	
 	private static final String TAG = "WeatherWidget";
+	private static RemoteViews views;
+	private static Context context;
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
@@ -58,6 +64,9 @@ public class WeatherWidget extends AppWidgetProvider {
 	
 	public static void updateAppWidget(RemoteViews views, Context context, 
 			AppWidgetManager appWidgetManager, String cityCode) {
+		
+		WeatherWidget.views = views;
+		WeatherWidget.context = context;
 		
 		SharedPreferences shared = context.getSharedPreferences(PublicConsts.STORE_WEATHER, WFMainActivity.MODE_PRIVATE);
 		long currentTime = System.currentTimeMillis();
@@ -117,14 +126,64 @@ public class WeatherWidget extends AppWidgetProvider {
 		StringBuffer str = new StringBuffer("http://m.weather.com.cn/data/");
 		str.append(cityCode);
 		str.append(".html");
+		//实例化异步线程类，进行网络访问
+		UpdWeatherNetwork uwn = new WeatherWidget().new UpdWeatherNetwork();
+		uwn.execute( str.toString() );
+	}
+	
+	/**
+     * 将通过网络获取天气的部分写成异步线程，因为主线程内不应该有网络访问，否则可能造成主线程响应时间过长,
+     * 甚至出现background ANR（application not responsed),导致MainActivity一直卡在生成画面的地方，人机无法继续交互，用户体验差
+     *
+     * @version 2013-6-19
+     * @author PSET
+     * @since JDK1.6
+     *
+     */
+	private class UpdWeatherNetwork extends AsyncTask<String, Integer, String> {
+
+		/** 
+		 * onPreExecute方法用于在执行后台任务前做一些UI操作 
+		 */
+        @Override  
+        protected void onPreExecute() {  
+             
+        }
+        
+		/** 
+		 * doInBackground方法用于执行后台任务,不可在此方法内修改UI
+		 * @param params citycode
+		 * @return String 网络数据
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
+		@Override
+		protected String doInBackground( String... params ) {
+			LogUtil.i( TAG, "doInBackground method called" );
+			String url = (String)params[0];
+	    	String info = new WebAccessTools(context).getWebContent(url);
+			return info;
+		}
 		
-		try {
-			Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "================ START UPDATING WEATHER ===================" );
-			String info =new WebAccessTools(context).getWebContent(str.toString());
-			Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "updated weather info:" + info );
-			Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "================ END UPDATING WEATHER =====================" );
-			if (info != null && !"".equals( info )) {
-				JSONObject json=new JSONObject(info).getJSONObject("weatherinfo");
+		/** 
+		 * onProgressUpdate方法用于更新进度信息  
+		 */
+        @Override  
+        protected void onProgressUpdate(Integer... progresses) {
+        	
+        }
+		
+		/** 
+		 * onPostExecute方法用于在doInBackground执行完后台任务后更新UI,显示结果
+		 * @param result citycode
+		 * @return String 网络数据
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
+		@Override  
+        protected void onPostExecute(String result) {
+			LogUtil.i( TAG, "onPostExecute method called" );
+			//==========================解析JSON得到天气===========================
+			try {
+				JSONObject json=new JSONObject(result).getJSONObject("weatherresult");
 				int weather_icon = 0;
 				
 				//建立一个缓存天气的文件
@@ -132,71 +191,71 @@ public class WeatherWidget extends AppWidgetProvider {
 						WFMainActivity.MODE_PRIVATE).edit();
 				
 				//得到城市
-				info=json.getString("city");
-				editor.putString("city", info);
+				result=json.getString("city");
+				editor.putString("city", result);
 				
-				views.setTextViewText(R.id.widget_city, info);
+				views.setTextViewText(R.id.widget_city, result);
 				
 				//得到阳历日期
-				info= json.getString("date_y") ;
-				info= info+"("+json.getString("week")+")";
-				editor.putString("date_y", info);
+				result= json.getString("date_y") ;
+				result= result+"("+json.getString("week")+")";
+				editor.putString("date_y", result);
 				
-				views.setTextViewText(R.id.widget_data01, info);
+				views.setTextViewText(R.id.widget_data01, result);
 				
 				//得到农历
-				info= json.getString("date");
-				editor.putString("date", info);
+				result= json.getString("date");
+				editor.putString("date", result);
 				//得到温度
-				info= json.getString("temp1");
-				editor.putString("temp1", info);
+				result= json.getString("temp1");
+				editor.putString("temp1", result);
 				
-				views.setTextViewText(R.id.widget_temp, info);
+				views.setTextViewText(R.id.widget_temp, result);
 				//得到天气
-				info= json.getString("weather1");
-				editor.putString("weather1", info);
+				result= json.getString("weather1");
+				editor.putString("weather1", result);
 				
-				views.setTextViewText(R.id.widget_weather, info);
+				views.setTextViewText(R.id.widget_weather, result);
 				//天气图标
-				info= json.getString("img_title1");
-				weather_icon = WFMainActivity.getWeatherBitMapResource(info);
+				result= json.getString("img_title1");
+				weather_icon = WFMainActivity.getWeatherBitMapResource(result);
 				editor.putInt("img_title1", weather_icon);
 				
 				views.setImageViewResource(R.id.widget_icon, weather_icon);
 				//得到风向
-				info= json.getString("wind1");
-				editor.putString("wind1", info);
+				result= json.getString("wind1");
+				editor.putString("wind1", result);
 				//得到建议
-				info= json.getString("index_d");
-				editor.putString("index_d", info);
+				result= json.getString("index_d");
+				editor.putString("index_d", result);
 				
 				//得到明天的天气
-				info= json.getString("weather2");
-				editor.putString("weather2", info);
+				result= json.getString("weather2");
+				editor.putString("weather2", result);
 				//明天的图标
-				info= json.getString("img_title2");
-				weather_icon = WFMainActivity.getWeatherBitMapResource(info);
+				result= json.getString("img_title2");
+				weather_icon = WFMainActivity.getWeatherBitMapResource(result);
 				editor.putInt("img_title2", weather_icon);
 				//明天的气温
-				info= json.getString("temp2");
-				editor.putString("temp2", info);
+				result= json.getString("temp2");
+				editor.putString("temp2", result);
 				//明天的风力
-				info= json.getString("wind2");
-				editor.putString("wind2", info);
+				result= json.getString("wind2");
+				editor.putString("wind2", result);
 				
 				//后天的天气
-				info= json.getString("weather3");
-				editor.putString("weather3", info);
+				result= json.getString("weather3");
+				editor.putString("weather3", result);
 				//后天天气图标
-				info= json.getString("img_title3");
-				weather_icon = WFMainActivity.getWeatherBitMapResource(info);
+				result= json.getString("img_title3");
+				weather_icon = WFMainActivity.getWeatherBitMapResource(result);
 				editor.putInt("img_title3", weather_icon);
 				//后天的气温
-				info= json.getString("temp3");
-				editor.putString("temp3", info);
+				result= json.getString("temp3");
+				editor.putString("temp3", result);
 				//后天的风力
-				info= json.getString("wind3");
-				editor.putString("wind3", info);
+				result= json.getString("wind3");
+				editor.putString("wind3", result);
 				
 				//更新时间
 				long updTime = System.currentTimeMillis();
@@ -207,9 +266,19 @@ public class WeatherWidget extends AppWidgetProvider {
 				
 				//保存
 				editor.commit();
+			} catch (JSONException e) {
+				LogUtil.e( TAG, e.getStackTrace().toString() );
 			}
-		}catch(JSONException e) {
-			e.printStackTrace();
+			
 		}
+		
+		/** 
+		 * onCancelled方法用于在取消执行中的任务时更改UI
+		 */
+        @Override  
+        protected void onCancelled() {  
+            
+        }
+		
 	}
 }
