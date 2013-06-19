@@ -36,6 +36,8 @@ public class PublicConsts {
 	public static Long DEFAULT_UPD_INTERVAL = 3*60*60*1000L;
 	//标志个人日志输出的标记
 	public static final String MY_APP_LOG_SYMBOL = "#####################";
+	//APP TAG
+	public static final String APP_TAG = "WFSystem";
 	
 	/** =========================store_weather文件项目============================== */
 	//store_weather文件中的记录更新间隔的项目

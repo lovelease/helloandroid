@@ -52,7 +52,7 @@ public class Utility {
 		//日志输出
 		Long updInterval = shared.getLong( PublicConsts.WEATHER_FILE_UPD_INTERVAL, 0L );
 		String outputTime = (updInterval == 0L ? "设置失败" : String.valueOf( updInterval ));
-		Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "===============set update interval to:" + outputTime + "===================" );
+		Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "===============set update interval to:" + outputTime + "===================" );
 	}
 	
 	/**

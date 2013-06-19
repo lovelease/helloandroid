@@ -68,22 +68,22 @@ public class WeatherWidget extends AppWidgetProvider {
 		//计算天气缓存文件的有效期
 		long vaildTime = lastUpdated + updInterval;
 		
-		Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "vaildTime=" + vaildTime );
-		Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "currentTime=" + currentTime );
+		Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "vaildTime=" + vaildTime );
+		Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "currentTime=" + currentTime );
 		//比较天气缓存文件中的有效期，如果超时了，则访问网络更新天气
 		if(vaildTime <= currentTime) {
-			Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "vaildTime <= currentTime,从网络更新天气" );
+			Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "vaildTime <= currentTime,从网络更新天气" );
 			updateWeather(views, context, cityCode);
 		}
 		else {
-			Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "vaildTime > currentTime,从缓存文件更新天气" );
+			Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "vaildTime > currentTime,从缓存文件更新天气" );
 			updateWeather(views, context);
 		}
 		//更新时间
 		Date date = new Date();
 		SimpleDateFormat foramt = new SimpleDateFormat("HH:mm");
 		String timeText = foramt.format(date);
-		Log.i(TAG, PublicConsts.MY_APP_LOG_SYMBOL + "===================update  time======"+timeText+"=====================");
+		Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "===================update  time======"+timeText+"=====================");
 		views.setTextViewText(R.id.widget_time , timeText);
 	}
 
@@ -119,10 +119,10 @@ public class WeatherWidget extends AppWidgetProvider {
 		str.append(".html");
 		
 		try {
-			Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "================ START UPDATING WEATHER ===================" );
+			Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "================ START UPDATING WEATHER ===================" );
 			String info =new WebAccessTools(context).getWebContent(str.toString());
-			Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "updated weather info:" + info );
-			Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "================ END UPDATING WEATHER =====================" );
+			Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "updated weather info:" + info );
+			Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "================ END UPDATING WEATHER =====================" );
 			if (info != null && !"".equals( info )) {
 				JSONObject json=new JSONObject(info).getJSONObject("weatherinfo");
 				int weather_icon = 0;

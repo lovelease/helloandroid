@@ -68,12 +68,12 @@ public class DBHelper extends SQLiteOpenHelper {
 			sca.importInitDatabase();
 		}
 		//查询获得游标
-		Log.d( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "========search provinces start=======" );
+		Log.d( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "========search provinces start=======" );
 		Cursor cursor = db.query("provinces", columns, null, null, null, null, null);
 		columns = null;
 		int count= cursor.getCount();
-		Log.d( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "========search provinces end=======" );
-		Log.d( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "count=" + count );
+		Log.d( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "========search provinces end=======" );
+		Log.d( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "count=" + count );
 		String[] provinces = new String[count];
 		count=0;
 		while(!cursor.isLast()) {

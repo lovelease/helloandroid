@@ -54,7 +54,7 @@ public class WebAccessTools {
 	 * @return web服务器响应的内容，为<code>String</code>类型，当访问失败时，返回为null
 	 */
 	public  String getWebContent(String url) {
-		Log.i( TAG, PublicConsts.MY_APP_LOG_SYMBOL + "web access url：" + url );
+		LogUtil.i( TAG, "web access url：" + url );
 		//创建一个http请求对象
 		HttpGet request = new HttpGet(url);
 		//创建HttpParams以用来设置HTTP参数
@@ -65,14 +65,18 @@ public class WebAccessTools {
 		//创建一个网络访问处理对象
 		HttpClient httpClient = new DefaultHttpClient(params);
 		try{
+			LogUtil.i( TAG, "send request start" );
 			//执行请求参数项
 			HttpResponse response = httpClient.execute(request);
+			LogUtil.i( TAG, "get response success" );
 			//判断是否请求成功
 			if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				LogUtil.i( TAG, "网络访问成功,status code = " + response.getStatusLine().getStatusCode() );
 				//获得响应信息
 				String content = EntityUtils.toString(response.getEntity());
 				return content;
 			} else {
+				LogUtil.i( TAG, "网络访问失败,status code = " + response.getStatusLine().getStatusCode() );
 				if (context != null) {
 					//网连接失败，使用Toast显示提示信息
 					Toast.makeText(context, "网络访问失败，请检查网络设置!", Toast.LENGTH_SHORT).show();
