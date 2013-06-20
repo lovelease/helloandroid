@@ -109,11 +109,15 @@ public class WFMainActivity extends Activity {
     		long updInterval = shared.getLong(PublicConsts.WEATHER_FILE_UPD_INTERVAL, PublicConsts.DEFAULT_UPD_INTERVAL);
     		//计算天气缓存文件的有效期
     		long vaildTime = lastUpdated + updInterval;
+    		LogUtil.i( TAG, "WFMainActivity/onCreate update : vaildTime=" + Utility.getTime( vaildTime ) );
+    		LogUtil.i( TAG, "WFMainActivity/onCreate update : currentTime=" + Utility.getTime( currentTime ) );
     		//比较天气缓存文件的有效期，如果超时了，则访问网络更新天气
     		if(vaildTime > currentTime) {
+    			LogUtil.i( TAG, "WFMainActivity/onCreate update : vaildTime > currentTime,从缓存文件更新天气" );
     			//读取缓存文件中的天气
     			setWeatherSituation(shared);
     		} else {
+    			LogUtil.i( TAG, "WFMainActivity/onCreate update : vaildTime <= currentTime,从网络更新天气" );
     			//从网上更新新的天气
     			setWeatherSituation(cityCode);
     		}
@@ -132,9 +136,11 @@ public class WFMainActivity extends Activity {
 		String cityCode = sp.getString(PublicConsts.SP_CITYCODE, "");
     	if(cityCode!=null&&cityCode.trim().length()!=0) {
     		if(data!=null&&data.getBooleanExtra("updateWeather", false)) {
+    			LogUtil.i( TAG, "WFMainActivity/onActivityResult update : 从网络更新天气" );
     			//从网上更新新的天气
     			setWeatherSituation(cityCode);
     		} else {
+    			LogUtil.i( TAG, "WFMainActivity/onActivityResult update : 从缓存文件更新天气" );
     			//读取缓存文件中的天气
     			SharedPreferences shared = getSharedPreferences(PublicConsts.STORE_WEATHER, MODE_PRIVATE);
     			setWeatherSituation(shared);

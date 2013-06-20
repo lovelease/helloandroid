@@ -74,6 +74,7 @@ public class WebAccessTools {
 				LogUtil.i( TAG, "网络访问成功,status code = " + response.getStatusLine().getStatusCode() );
 				//获得响应信息
 				String content = EntityUtils.toString(response.getEntity());
+				LogUtil.i( TAG, "response content = " + content );
 				return content;
 			} else {
 				LogUtil.i( TAG, "网络访问失败,status code = " + response.getStatusLine().getStatusCode() );

@@ -77,15 +77,15 @@ public class WeatherWidget extends AppWidgetProvider {
 		//计算天气缓存文件的有效期
 		long vaildTime = lastUpdated + updInterval;
 		
-		Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "vaildTime=" + vaildTime );
-		Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "currentTime=" + currentTime );
+		LogUtil.i( TAG, "widget update : vaildTime=" + Utility.getTime( vaildTime ) );
+		LogUtil.i( TAG, "widget update : currentTime=" + Utility.getTime( currentTime ) );
 		//比较天气缓存文件中的有效期，如果超时了，则访问网络更新天气
 		if(vaildTime <= currentTime) {
-			Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "vaildTime <= currentTime,从网络更新天气" );
+			LogUtil.i( TAG, "widget update : vaildTime <= currentTime,从网络更新天气" );
 			updateWeather(views, context, cityCode);
 		}
 		else {
-			Log.i( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "vaildTime > currentTime,从缓存文件更新天气" );
+			LogUtil.i( TAG, "widget update : vaildTime > currentTime,从缓存文件更新天气" );
 			updateWeather(views, context);
 		}
 		//更新时间
@@ -183,6 +183,8 @@ public class WeatherWidget extends AppWidgetProvider {
 			LogUtil.i( TAG, "onPostExecute method called" );
 			//==========================解析JSON得到天气===========================
 			try {
+				LogUtil.i( TAG, "onPostExecute received result = " + result );
+				LogUtil.i( TAG, "解析JSON得到天气 START" );
 				JSONObject json=new JSONObject(result).getJSONObject("weatherresult");
 				int weather_icon = 0;
 				
@@ -257,6 +259,8 @@ public class WeatherWidget extends AppWidgetProvider {
 				result= json.getString("wind3");
 				editor.putString("wind3", result);
 				
+				LogUtil.i( TAG, "解析JSON得到天气 END SUCCESSFULLY" );
+				
 				//更新时间
 				long updTime = System.currentTimeMillis();
 				editor.putLong(PublicConsts.WEATHER_FILE_LAST_UPDATE, updTime);
@@ -267,7 +271,8 @@ public class WeatherWidget extends AppWidgetProvider {
 				//保存
 				editor.commit();
 			} catch (JSONException e) {
-				LogUtil.e( TAG, e.getStackTrace().toString() );
+				LogUtil.i( TAG, "解析JSON得到天气 THROW EXCEPTION" );
+				LogUtil.e( TAG, "EXCEPTION MSG : " + e.getMessage() );
 			}
 			
 		}

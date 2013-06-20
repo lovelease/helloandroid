@@ -27,7 +27,7 @@ public class Utility {
 	
 	private static final String TAG = "Utility";
 	//时间格式：hh:mm:ss
-	public static final String DATE_FORMAT_HH_MM_SS = "hh:mm:ss";
+	public static final String DATE_FORMAT_HH_MM_SS = "HH:mm:ss";
 
 	/**
 	 * 
