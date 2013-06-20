@@ -417,7 +417,8 @@ public class LogService extends Service {
 			process = Runtime.getRuntime().exec(
 					commandList.toArray(new String[commandList.size()]));
 			recordLogServiceLog("start collecting the log,and log name is:"+logFileName);
-			// process.waitFor();
+			//TODO temparally add waitFor
+			process.waitFor();
 		} catch (Exception e) {
 			Log.e( PublicConsts.APP_TAG, TAG + PublicConsts.MY_APP_LOG_SYMBOL + "CollectorThread == >" + e.getMessage(), e);
 			recordLogServiceLog("CollectorThread == >" + e.getMessage());
