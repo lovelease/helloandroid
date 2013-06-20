@@ -205,8 +205,6 @@ public class WFMainActivity extends Activity {
             if( cityCode!= null && cityCode.trim().length()!=0) {
             	setWeatherSituation(cityCode);
             }
-            
-			Toast.makeText( this, "天气更新成功", Toast.LENGTH_SHORT ).show();
     		break;
     	case R.id.menu_setting:
     		//跳转到app设置Activity
@@ -426,7 +424,8 @@ public class WFMainActivity extends Activity {
 			LogUtil.i( TAG, "onPostExecute method called" );
 			//==========================解析JSON得到天气===========================
 			try {
-				JSONObject json=new JSONObject(result).getJSONObject("weatherinfo");
+				LogUtil.i( TAG, "解析JSON得到天气 START" );
+				JSONObject json=new JSONObject(result).getJSONObject(PublicConsts.WEATHER_DATA_NAME);
 				TextView tempText = null;
 				ImageView imageView=null;
 				int weather_icon = 0;
@@ -522,6 +521,8 @@ public class WFMainActivity extends Activity {
 				tempText.setText(result);
 				editor.putString("wind3", result);
 				
+				LogUtil.i( TAG, "解析JSON得到天气 END SUCCESSFULLY" );
+				
 				//最近更新时间
 				long updTime = System.currentTimeMillis();
 				String updTimeStr = Utility.getTime( updTime );
@@ -531,8 +532,10 @@ public class WFMainActivity extends Activity {
 				
 				//保存
 				editor.commit();
+				Toast.makeText( WFMainActivity.this, "天气更新成功", Toast.LENGTH_SHORT ).show();
 			} catch (JSONException e) {
-				LogUtil.e( TAG, e.getStackTrace().toString() );
+				LogUtil.i( TAG, "解析JSON得到天气 THROW EXCEPTION" );
+				LogUtil.e( TAG, "EXCEPTION MSG : " + e.getMessage() );
 			}
 			
 		}

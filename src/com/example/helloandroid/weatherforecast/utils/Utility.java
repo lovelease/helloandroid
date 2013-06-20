@@ -4,6 +4,7 @@
  */
 package com.example.helloandroid.weatherforecast.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.example.helloandroid.weatherforecast.activity.WFMainActivity;
@@ -64,7 +65,8 @@ public class Utility {
 		if (longDate == null) {
 			throw new NullPointerException();
 		}
-		return DateFormat.format( DATE_FORMAT_HH_MM_SS, longDate ).toString();
+		SimpleDateFormat dateformat=new SimpleDateFormat(DATE_FORMAT_HH_MM_SS);
+		return dateformat.format( longDate ).toString();
 	}
 
 }

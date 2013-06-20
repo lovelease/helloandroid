@@ -39,6 +39,9 @@ public class PublicConsts {
 	//APP TAG
 	public static final String APP_TAG = "WFSystem";
 	
+	//中央气象网站返回的天气数据的json的根节点名称
+	public static final String WEATHER_DATA_NAME = "weatherinfo";
+	
 	/** =========================store_weather文件项目============================== */
 	//store_weather文件中的记录更新间隔的项目
 	public static final String WEATHER_FILE_UPD_INTERVAL = "updInterval";

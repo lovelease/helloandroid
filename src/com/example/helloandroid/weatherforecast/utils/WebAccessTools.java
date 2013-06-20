@@ -87,7 +87,7 @@ public class WebAccessTools {
 			}
 			
 		}catch(Exception e) {
-			e.printStackTrace();
+			LogUtil.e(TAG, "getWebContent throws exception :" + e.getMessage());
 		} finally {
 			//释放网络连接资源
 			httpClient.getConnectionManager().shutdown();

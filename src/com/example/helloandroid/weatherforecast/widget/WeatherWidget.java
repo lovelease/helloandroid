@@ -183,9 +183,8 @@ public class WeatherWidget extends AppWidgetProvider {
 			LogUtil.i( TAG, "onPostExecute method called" );
 			//==========================解析JSON得到天气===========================
 			try {
-				LogUtil.i( TAG, "onPostExecute received result = " + result );
 				LogUtil.i( TAG, "解析JSON得到天气 START" );
-				JSONObject json=new JSONObject(result).getJSONObject("weatherresult");
+				JSONObject json=new JSONObject(result).getJSONObject(PublicConsts.WEATHER_DATA_NAME);
 				int weather_icon = 0;
 				
 				//建立一个缓存天气的文件
