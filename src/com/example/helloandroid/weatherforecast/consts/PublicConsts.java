@@ -17,6 +17,8 @@ public class PublicConsts {
 	/** =======================General consts====================================== */
 	//space
 	public static final String STR_SPACE = " ";
+	//blank
+	public static final String STR_BLANK = " ";
 
 	//记录壁纸的文件
 	public static final String WALLPAPER_FILE="wallpaper_file";

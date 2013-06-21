@@ -17,6 +17,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.helloandroid.R;
 import com.example.helloandroid.weatherforecast.activity.WFMainActivity;
@@ -183,92 +184,97 @@ public class WeatherWidget extends AppWidgetProvider {
 			LogUtil.i( TAG, "onPostExecute method called" );
 			//==========================解析JSON得到天气===========================
 			try {
-				LogUtil.i( TAG, "解析JSON得到天气 START" );
-				JSONObject json=new JSONObject(result).getJSONObject(PublicConsts.WEATHER_DATA_NAME);
-				int weather_icon = 0;
+				if (result == null || PublicConsts.STR_BLANK.equals( result )) {
+					LogUtil.i( TAG, "天气更新失败，网络错误（WeatherWidget/onPostExecute：result=null)" );
+				} else {
+					LogUtil.i( TAG, "解析JSON得到天气 START" );
+					JSONObject json=new JSONObject(result).getJSONObject(PublicConsts.WEATHER_DATA_NAME);
+					int weather_icon = 0;
+					
+					//建立一个缓存天气的文件
+					SharedPreferences.Editor editor = context.getSharedPreferences(PublicConsts.STORE_WEATHER,
+							WFMainActivity.MODE_PRIVATE).edit();
+					
+					//得到城市
+					result=json.getString("city");
+					editor.putString("city", result);
+					
+					views.setTextViewText(R.id.widget_city, result);
+					
+					//得到阳历日期
+					result= json.getString("date_y") ;
+					result= result+"("+json.getString("week")+")";
+					editor.putString("date_y", result);
+					
+					views.setTextViewText(R.id.widget_data01, result);
+					
+					//得到农历
+					result= json.getString("date");
+					editor.putString("date", result);
+					//得到温度
+					result= json.getString("temp1");
+					editor.putString("temp1", result);
+					
+					views.setTextViewText(R.id.widget_temp, result);
+					//得到天气
+					result= json.getString("weather1");
+					editor.putString("weather1", result);
+					
+					views.setTextViewText(R.id.widget_weather, result);
+					//天气图标
+					result= json.getString("img_title1");
+					weather_icon = WFMainActivity.getWeatherBitMapResource(result);
+					editor.putInt("img_title1", weather_icon);
+					
+					views.setImageViewResource(R.id.widget_icon, weather_icon);
+					//得到风向
+					result= json.getString("wind1");
+					editor.putString("wind1", result);
+					//得到建议
+					result= json.getString("index_d");
+					editor.putString("index_d", result);
+					
+					//得到明天的天气
+					result= json.getString("weather2");
+					editor.putString("weather2", result);
+					//明天的图标
+					result= json.getString("img_title2");
+					weather_icon = WFMainActivity.getWeatherBitMapResource(result);
+					editor.putInt("img_title2", weather_icon);
+					//明天的气温
+					result= json.getString("temp2");
+					editor.putString("temp2", result);
+					//明天的风力
+					result= json.getString("wind2");
+					editor.putString("wind2", result);
+					
+					//后天的天气
+					result= json.getString("weather3");
+					editor.putString("weather3", result);
+					//后天天气图标
+					result= json.getString("img_title3");
+					weather_icon = WFMainActivity.getWeatherBitMapResource(result);
+					editor.putInt("img_title3", weather_icon);
+					//后天的气温
+					result= json.getString("temp3");
+					editor.putString("temp3", result);
+					//后天的风力
+					result= json.getString("wind3");
+					editor.putString("wind3", result);
+					
+					LogUtil.i( TAG, "解析JSON得到天气 END SUCCESSFULLY" );
+					
+					//更新时间
+					long updTime = System.currentTimeMillis();
+					editor.putLong(PublicConsts.WEATHER_FILE_LAST_UPDATE, updTime);
+					
+					String time = Utility.getTime( updTime );
+					views.setTextViewText(R.id.widget_lastUpd, time);
+					
+					//保存
+					editor.commit();
+				}
 				
-				//建立一个缓存天气的文件
-				SharedPreferences.Editor editor = context.getSharedPreferences(PublicConsts.STORE_WEATHER,
-						WFMainActivity.MODE_PRIVATE).edit();
-				
-				//得到城市
-				result=json.getString("city");
-				editor.putString("city", result);
-				
-				views.setTextViewText(R.id.widget_city, result);
-				
-				//得到阳历日期
-				result= json.getString("date_y") ;
-				result= result+"("+json.getString("week")+")";
-				editor.putString("date_y", result);
-				
-				views.setTextViewText(R.id.widget_data01, result);
-				
-				//得到农历
-				result= json.getString("date");
-				editor.putString("date", result);
-				//得到温度
-				result= json.getString("temp1");
-				editor.putString("temp1", result);
-				
-				views.setTextViewText(R.id.widget_temp, result);
-				//得到天气
-				result= json.getString("weather1");
-				editor.putString("weather1", result);
-				
-				views.setTextViewText(R.id.widget_weather, result);
-				//天气图标
-				result= json.getString("img_title1");
-				weather_icon = WFMainActivity.getWeatherBitMapResource(result);
-				editor.putInt("img_title1", weather_icon);
-				
-				views.setImageViewResource(R.id.widget_icon, weather_icon);
-				//得到风向
-				result= json.getString("wind1");
-				editor.putString("wind1", result);
-				//得到建议
-				result= json.getString("index_d");
-				editor.putString("index_d", result);
-				
-				//得到明天的天气
-				result= json.getString("weather2");
-				editor.putString("weather2", result);
-				//明天的图标
-				result= json.getString("img_title2");
-				weather_icon = WFMainActivity.getWeatherBitMapResource(result);
-				editor.putInt("img_title2", weather_icon);
-				//明天的气温
-				result= json.getString("temp2");
-				editor.putString("temp2", result);
-				//明天的风力
-				result= json.getString("wind2");
-				editor.putString("wind2", result);
-				
-				//后天的天气
-				result= json.getString("weather3");
-				editor.putString("weather3", result);
-				//后天天气图标
-				result= json.getString("img_title3");
-				weather_icon = WFMainActivity.getWeatherBitMapResource(result);
-				editor.putInt("img_title3", weather_icon);
-				//后天的气温
-				result= json.getString("temp3");
-				editor.putString("temp3", result);
-				//后天的风力
-				result= json.getString("wind3");
-				editor.putString("wind3", result);
-				
-				LogUtil.i( TAG, "解析JSON得到天气 END SUCCESSFULLY" );
-				
-				//更新时间
-				long updTime = System.currentTimeMillis();
-				editor.putLong(PublicConsts.WEATHER_FILE_LAST_UPDATE, updTime);
-				
-				String time = Utility.getTime( updTime );
-				views.setTextViewText(R.id.widget_lastUpd, time);
-				
-				//保存
-				editor.commit();
 			} catch (JSONException e) {
 				LogUtil.i( TAG, "解析JSON得到天气 THROW EXCEPTION" );
 				LogUtil.e( TAG, "EXCEPTION MSG : " + e.getMessage() );

@@ -10,6 +10,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
@@ -60,8 +61,8 @@ public class WebAccessTools {
 		//创建HttpParams以用来设置HTTP参数
 		HttpParams params=new BasicHttpParams();
 		//设置连接超时或响应超时
-		//HttpConnectionParams.setConnectionTimeout(params, 3000);
-		//HttpConnectionParams.setSoTimeout(params, 5000);
+		HttpConnectionParams.setConnectionTimeout(params, 3000);
+		HttpConnectionParams.setSoTimeout(params, 5000);
 		//创建一个网络访问处理对象
 		HttpClient httpClient = new DefaultHttpClient(params);
 		try{
