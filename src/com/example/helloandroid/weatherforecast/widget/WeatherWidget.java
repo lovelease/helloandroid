@@ -159,7 +159,7 @@ public class WeatherWidget extends AppWidgetProvider {
 		 */
 		@Override
 		protected String doInBackground( String... params ) {
-			LogUtil.i( TAG, "doInBackground method called" );
+			LogUtil.i( TAG, "WeatherWidget/UpdWeatherNetwork/doInBackground method called" );
 			String url = (String)params[0];
 	    	String info = new WebAccessTools(context).getWebContent(url);
 			return info;

@@ -395,7 +395,7 @@ public class WFMainActivity extends Activity {
 		 */
 		@Override
 		protected String doInBackground( String... params ) {
-			LogUtil.i( TAG, "doInBackground method called" );
+			LogUtil.i( TAG, "WFMainActivity/UpdWeatherNetwork/doInBackground method called" );
 			String cityCode = params[0];
 			String url = "http://m.weather.com.cn/data/"+cityCode+".html";
 	    	String info = new WebAccessTools(WFMainActivity.this).getWebContent(url);
