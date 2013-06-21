@@ -1,10 +1,7 @@
 package com.example.helloandroid.weatherforecast.activity;
 
 import java.io.File;
-import java.util.Date;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,13 +14,10 @@ import com.example.helloandroid.weatherforecast.utils.WebAccessTools;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,9 +47,12 @@ public class WFMainActivity extends Activity {
         		WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView( R.layout.activity_wfmain );
 		
-		//启动后台写日志服务，将日志记录到SDCard中，方便实机测试
-		Intent startService =  new Intent (this,LogService.class);
-		startService( startService );
+		//判断日志服务是否已经启动
+		if (!Utility.isServiceRunning( this, LogService.class )) {
+			//启动后台写日志服务，将日志记录到SDCard中，方便实机测试
+			Intent startService =  new Intent (this,LogService.class);
+			startService( startService );
+		}
 		
 		/**
 		 * 从android 4.0开始，主程序中不再能访问网络，增加以下设置可以允许主线程访问网络，但是建议主线程中不要访问网络

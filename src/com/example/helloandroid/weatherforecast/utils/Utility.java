@@ -6,10 +6,14 @@ package com.example.helloandroid.weatherforecast.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import com.example.helloandroid.weatherforecast.activity.WFMainActivity;
 import com.example.helloandroid.weatherforecast.consts.PublicConsts;
+import com.example.helloandroid.weatherforecast.service.LogService;
 
+import android.app.ActivityManager;
+import android.app.Service;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -57,9 +61,9 @@ public class Utility {
 	}
 	
 	/**
-	 * 获得【HH:MM:SS】格式的时间
+	 * 获得【HH:mm:ss】格式的时间
 	 * @param longDate long类型的时间
-	 * @return 【HH:MM:SS】格式的时间
+	 * @return 【HH:mm:ss】格式的时间
 	 */
 	public static String getTime(Long longDate) {
 		if (longDate == null) {
@@ -67,6 +71,31 @@ public class Utility {
 		}
 		SimpleDateFormat dateformat=new SimpleDateFormat(DATE_FORMAT_HH_MM_SS);
 		return dateformat.format( longDate ).toString();
+	}
+	
+	/**
+	 * 判断service是否运行
+	 * @param context 上下文context对象
+	 * @param className 要判断的service的class对象
+	 * @return true：运行中；false：未运行
+	 */
+	public static boolean isServiceRunning(Context context, Class<?> className) {
+		boolean isRunning = false;
+		String serviceName;
+		ActivityManager activityManager = (ActivityManager)context.getSystemService(Service.ACTIVITY_SERVICE);
+		List<ActivityManager.RunningServiceInfo> serviceList = activityManager.getRunningServices(Integer.MAX_VALUE);
+		if (!serviceList.isEmpty()) {
+			for (int i=0; i<serviceList.size(); i++) {
+				serviceName = serviceList.get(i).service.getClassName();
+				if (className.getName().equals(serviceName) == true) {
+					isRunning = true;
+					break;
+				}
+			}
+		}
+		Log.i(TAG,"[" + className.getName() + "] is running : "+isRunning);
+		
+		return isRunning;
 	}
 
 }
